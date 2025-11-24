@@ -29,20 +29,13 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value || 
                request.headers.get('authorization')?.replace('Bearer ', '');
                
-  console.log('Token exists:', !!token);
-  if (token) {
-    console.log('Token preview:', token.substring(0, 20) + '...');
-  }
-  
   if (!token) {
     // Redirect to login for protected routes
     return NextResponse.redirect(new URL('/login', request.url));
   }
   
   try {
-    console.log('Attempting to verify token:', token.substring(0, 50) + '...');
     const payload = verifyToken(token);
-    console.log('Token verification successful for:', payload.email);
     
     // Add user info to request headers for API routes
     const requestHeaders = new Headers(request.headers);
@@ -50,7 +43,6 @@ export function middleware(request: NextRequest) {
     requestHeaders.set('x-user-email', payload.email);
     requestHeaders.set('x-user-role', payload.role);
     
-    console.log('Allowing access to:', pathname);
     return NextResponse.next({
       request: {
         headers: requestHeaders,
@@ -58,7 +50,6 @@ export function middleware(request: NextRequest) {
     });
   } catch (error) {
     // Invalid token, clear cookie and redirect to login
-    console.log('Token verification failed:', error.message);
     const response = NextResponse.redirect(new URL('/login', request.url));
     response.cookies.delete('token');
     return response;

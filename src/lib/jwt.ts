@@ -52,15 +52,12 @@ export function signToken(payload: TokenPayload): string {
 // Verify JWT token (Edge Runtime compatible)
 export function verifyToken(token: string): TokenPayload {
   try {
-    console.log('Verifying token parts:', token.split('.').length);
     const parts = token.split('.');
     if (parts.length !== 3) {
       throw new Error(`Invalid token format - expected 3 parts, got ${parts.length}`);
     }
     
-    console.log('Decoding payload from:', parts[1].substring(0, 20) + '...');
     const payload = JSON.parse(base64urlDecode(parts[1]));
-    console.log('Decoded payload:', payload);
     
     // Check expiration
     const now = Math.floor(Date.now() / 1000);

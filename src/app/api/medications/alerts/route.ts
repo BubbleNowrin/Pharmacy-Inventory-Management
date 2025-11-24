@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     }).sort((a, b) => {
       const dateA = new Date(a.expiryDate);
       const dateB = new Date(b.expiryDate);
-      return dateA - dateB; // Sort ascending (earliest expiry first)
+      return dateA.getTime() - dateB.getTime(); // Sort ascending (earliest expiry first)
     });
     
     // Filter expired medications

@@ -29,10 +29,22 @@ export function Header() {
     }
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '/login';
+  const handleLogout = async () => {
+    try {
+      // Call logout API to clear HTTP-only cookie
+      await fetch('/api/auth/logout', { method: 'POST' });
+      
+      // Clear localStorage
+      localStorage.removeItem('user');
+      
+      // Redirect to login
+      window.location.href = '/login';
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Even if API fails, clear localStorage and redirect
+      localStorage.removeItem('user');
+      window.location.href = '/login';
+    }
   };
 
   return (

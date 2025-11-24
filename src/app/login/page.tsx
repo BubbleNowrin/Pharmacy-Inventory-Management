@@ -16,7 +16,9 @@ export default function LoginPage() {
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log('Form submitted!');
     e.preventDefault();
+    console.log('Default prevented, starting login...');
     setLoading(true);
     setError('');
 
@@ -31,24 +33,33 @@ export default function LoginPage() {
 
       const data = await response.json();
 
+      console.log('Login response status:', response.status);
+      console.log('Login response data:', data);
+
       if (response.ok) {
-        // Store token in localStorage and cookie for middleware
-        localStorage.setItem('token', data.token);
+        console.log('Login successful, storing user data...');
+        // Store user data in localStorage (token is now in HTTP-only cookie)
         localStorage.setItem('user', JSON.stringify(data.user));
         
-        // Set cookie for middleware
-        document.cookie = `token=${data.token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=strict`;
+        console.log('Redirecting to dashboard...');
+        // Check if cookie was set
+        console.log('Document cookies:', document.cookie);
         
-        // Small delay to ensure cookie is set, then redirect
+        // Wait a moment for cookie to be set, then redirect
         setTimeout(() => {
+          console.log('Attempting redirect after cookie delay...');
+          console.log('Current URL before redirect:', window.location.href);
           window.location.href = '/dashboard';
-        }, 100);
+        }, 500);
       } else {
+        console.log('Login failed:', data.error);
         setError(data.error || 'Login failed');
       }
     } catch (error) {
+      console.error('Login error:', error);
       setError('Network error. Please try again.');
     } finally {
+      console.log('Setting loading to false...');
       setLoading(false);
     }
   };
@@ -89,7 +100,12 @@ export default function LoginPage() {
             {error && (
               <div className="text-red-500 text-sm">{error}</div>
             )}
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button 
+              type="button" 
+              className="w-full" 
+              disabled={loading}
+              onClick={handleSubmit}
+            >
               {loading ? 'Logging in...' : 'Login'}
             </Button>
           </form>

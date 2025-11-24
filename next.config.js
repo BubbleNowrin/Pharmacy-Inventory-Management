@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ['mongoose'],
-  turbopack: {},
+  experimental: {
+    serverExternalPackages: ['mongoose'],
+  },
 }
 
 module.exports = nextConfig

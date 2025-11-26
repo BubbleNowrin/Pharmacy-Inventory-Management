@@ -1,26 +1,12 @@
-'use client';
-
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-
-export default function HomePage() {
-  const router = useRouter();
-
-  useEffect(() => {
-    // Check if user is logged in
-    const token = localStorage.getItem('token');
-    if (token) {
-      router.push('/dashboard');
-    } else {
-      router.push('/login');
-    }
-  }, [router]);
-
+﻿export default function HomePage() {
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="text-center">
-        <h1 className="text-2xl font-bold">Loading...</h1>
-        <p className="text-gray-600">Redirecting to the appropriate page</p>
+        <h1 className="text-2xl font-bold">Pharmacy Inventory System</h1>
+        <p className="text-gray-600">Application is working!</p>
+        <a href="/login" className="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded">
+          Go to Login
+        </a>
       </div>
     </div>
   );

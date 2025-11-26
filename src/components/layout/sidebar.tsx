@@ -9,7 +9,8 @@ import {
   TrendingUp, 
   Users, 
   Settings,
-  LogOut 
+  LogOut,
+  FileText 
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -39,6 +40,16 @@ const sidebarItems = [
     title: 'Suppliers',
     href: '/suppliers',
     icon: Users,
+  },
+  {
+    title: 'Adjustments',
+    href: '/adjustments',
+    icon: Settings,
+  },
+  {
+    title: 'Inventory Logs',
+    href: '/inventory-logs',
+    icon: FileText,
   },
   {
     title: 'Settings',

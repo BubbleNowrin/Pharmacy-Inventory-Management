@@ -224,9 +224,10 @@ Provide a JSON response:
     
     // Fallback if no JSON found
     return {
-      medications: [],
-      analysis: "AI service temporarily unavailable",
-      recommendations: []
+      action: 'maintain',
+      priority: 'low',
+      recommendation: "AI service temporarily unavailable. Please check stock levels manually.",
+      quantity: undefined
     };
 
   } catch (error) {

@@ -40,7 +40,7 @@ export function MonthlyTrendsChart({ data }: MonthlyTrendsChartProps) {
             <YAxis yAxisId="right" orientation="right" />
             <Tooltip 
               formatter={(value, name) => [
-                name === 'sales' ? `$${value.toFixed(2)}` : value,
+                name === 'sales' ? `$${Number(value).toFixed(2)}` : Number(value),
                 name === 'sales' ? 'Revenue' : name === 'quantity' ? 'Quantity' : 'Transactions'
               ]}
             />

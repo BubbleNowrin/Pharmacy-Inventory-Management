@@ -4,8 +4,10 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Package, AlertTriangle, TrendingUp, DollarSign, Calendar, BarChart3, Users, Activity } from 'lucide-react';
+import { Package, AlertTriangle, TrendingUp, DollarSign, Calendar, BarChart3, Brain, Activity } from 'lucide-react';
 import { AnalyticsDashboard } from '@/components/charts/analytics-dashboard';
+import { AIForecastDashboard } from '@/components/ai/ai-forecast-dashboard';
+import { SmartRecommendations } from '@/components/ai/smart-recommendations';
 
 interface AlertData {
   lowStock: any[];
@@ -17,6 +19,8 @@ interface AlertData {
     expiredCount: number;
   };
 }
+
+type DashboardMode = 'overview' | 'analytics' | 'ai';
 
 export default function DashboardPage() {
   const [alerts, setAlerts] = useState<AlertData>({
@@ -32,7 +36,7 @@ export default function DashboardPage() {
   const [totalMedications, setTotalMedications] = useState(0);
   const [inventoryValue, setInventoryValue] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [showAnalytics, setShowAnalytics] = useState(false);
+  const [currentMode, setCurrentMode] = useState<DashboardMode>('overview');
 
   useEffect(() => {
     fetchDashboardData();
@@ -79,31 +83,49 @@ export default function DashboardPage() {
     return new Date(date).toLocaleDateString();
   };
 
+  const getModeConfig = (mode: DashboardMode) => {
+    switch (mode) {
+      case 'overview':
+        return { icon: Package, label: 'Overview' };
+      case 'analytics':
+        return { icon: BarChart3, label: 'Analytics' };
+      case 'ai':
+        return { icon: Brain, label: 'AI Insights' };
+      default:
+        return { icon: Package, label: 'Overview' };
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600">Overview of your pharmacy inventory</p>
+          <p className="text-gray-600">
+            {currentMode === 'overview' && 'Overview of your pharmacy inventory'}
+            {currentMode === 'analytics' && 'Advanced analytics and business intelligence'}
+            {currentMode === 'ai' && 'AI-powered insights and forecasting'}
+          </p>
         </div>
         <div className="flex gap-2">
-          <Button
-            variant={!showAnalytics ? "default" : "outline"}
-            onClick={() => setShowAnalytics(false)}
-          >
-            Overview
-          </Button>
-          <Button
-            variant={showAnalytics ? "default" : "outline"}
-            onClick={() => setShowAnalytics(true)}
-          >
-            <BarChart3 className="w-4 h-4 mr-2" />
-            Analytics
-          </Button>
+          {(['overview', 'analytics', 'ai'] as const).map((mode) => {
+            const config = getModeConfig(mode);
+            const IconComponent = config.icon;
+            return (
+              <Button
+                key={mode}
+                variant={currentMode === mode ? "default" : "outline"}
+                onClick={() => setCurrentMode(mode)}
+              >
+                <IconComponent className="w-4 h-4 mr-2" />
+                {config.label}
+              </Button>
+            );
+          })}
         </div>
       </div>
 
-      {!showAnalytics ? (
+      {currentMode === 'overview' && (
         <>
           {/* Overview Dashboard */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -166,118 +188,125 @@ export default function DashboardPage() {
             </Card>
           </div>
           
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent Activities</CardTitle>
-                <CardDescription>
-                  Latest inventory movements
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {loading ? (
-                    <div className="text-sm text-gray-500">Loading activities...</div>
-                  ) : (
-                    <>
-                      {alerts.lowStock.slice(0, 3).map((item, index) => (
-                        <div key={index} className="flex items-center">
-                          <div className="w-2 h-2 bg-red-500 rounded-full mr-3"></div>
-                          <div className="flex-1">
-                            <p className="text-sm font-medium">{item.name} - Low Stock</p>
-                            <p className="text-xs text-muted-foreground">
-                              {item.quantity} {item.unit} remaining (threshold: {item.lowStockThreshold})
-                            </p>
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div className="lg:col-span-2 space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recent Activities</CardTitle>
+                  <CardDescription>
+                    Latest inventory movements
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {loading ? (
+                      <div className="text-sm text-gray-500">Loading activities...</div>
+                    ) : (
+                      <>
+                        {alerts.lowStock.slice(0, 3).map((item, index) => (
+                          <div key={index} className="flex items-center">
+                            <div className="w-2 h-2 bg-red-500 rounded-full mr-3"></div>
+                            <div className="flex-1">
+                              <p className="text-sm font-medium">{item.name} - Low Stock</p>
+                              <p className="text-xs text-muted-foreground">
+                                {item.quantity} {item.unit} remaining (threshold: {item.lowStockThreshold})
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                      {alerts.expiringSoon.slice(0, 2).map((item, index) => (
-                        <div key={index} className="flex items-center">
-                          <div className="w-2 h-2 bg-yellow-500 rounded-full mr-3"></div>
-                          <div className="flex-1">
-                            <p className="text-sm font-medium">{item.name} - Expiring Soon</p>
-                            <p className="text-xs text-muted-foreground">
-                              Expires: {formatDate(item.expiryDate)}
-                            </p>
+                        ))}
+                        {alerts.expiringSoon.slice(0, 2).map((item, index) => (
+                          <div key={index} className="flex items-center">
+                            <div className="w-2 h-2 bg-yellow-500 rounded-full mr-3"></div>
+                            <div className="flex-1">
+                              <p className="text-sm font-medium">{item.name} - Expiring Soon</p>
+                              <p className="text-xs text-muted-foreground">
+                                Expires: {formatDate(item.expiryDate)}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                    </>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Alerts & Notifications</CardTitle>
-                <CardDescription>
-                  Important updates that need your attention
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {loading ? (
-                    <div className="text-sm text-gray-500">Loading alerts...</div>
-                  ) : (
-                    <>
-                      {alerts.summary.lowStockCount > 0 && (
-                        <div className="flex items-center p-3 bg-red-50 rounded-lg">
-                          <AlertTriangle className="h-5 w-5 text-red-500 mr-3" />
-                          <div className="flex-1">
-                            <p className="text-sm font-medium text-red-800">Critical Stock Level</p>
-                            <p className="text-xs text-red-600">
-                              {alerts.summary.lowStockCount} medicines below minimum threshold
-                            </p>
-                          </div>
-                          <Badge variant="destructive">{alerts.summary.lowStockCount}</Badge>
-                        </div>
-                      )}
-                      
-                      {alerts.summary.expiringSoonCount > 0 && (
-                        <div className="flex items-center p-3 bg-yellow-50 rounded-lg">
-                          <Calendar className="h-5 w-5 text-yellow-500 mr-3" />
-                          <div className="flex-1">
-                            <p className="text-sm font-medium text-yellow-800">Expiry Alert</p>
-                            <p className="text-xs text-yellow-600">
-                              {alerts.summary.expiringSoonCount} medicines expiring in 30 days
-                            </p>
-                          </div>
-                          <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-                            {alerts.summary.expiringSoonCount}
-                          </Badge>
-                        </div>
-                      )}
+                        ))}
+                      </>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
 
-                      {alerts.summary.expiredCount > 0 && (
-                        <div className="flex items-center p-3 bg-red-100 rounded-lg">
-                          <AlertTriangle className="h-5 w-5 text-red-600 mr-3" />
-                          <div className="flex-1">
-                            <p className="text-sm font-medium text-red-900">Expired Medications</p>
-                            <p className="text-xs text-red-700">
-                              {alerts.summary.expiredCount} medicines have expired
-                            </p>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Alerts & Notifications</CardTitle>
+                  <CardDescription>
+                    Important updates that need your attention
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {loading ? (
+                      <div className="text-sm text-gray-500">Loading alerts...</div>
+                    ) : (
+                      <>
+                        {alerts.summary.lowStockCount > 0 && (
+                          <div className="flex items-center p-3 bg-red-50 rounded-lg">
+                            <AlertTriangle className="h-5 w-5 text-red-500 mr-3" />
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-red-800">Critical Stock Level</p>
+                              <p className="text-xs text-red-600">
+                                {alerts.summary.lowStockCount} medicines below minimum threshold
+                              </p>
+                            </div>
+                            <Badge variant="destructive">{alerts.summary.lowStockCount}</Badge>
                           </div>
-                          <Badge variant="destructive">{alerts.summary.expiredCount}</Badge>
-                        </div>
-                      )}
+                        )}
+                        
+                        {alerts.summary.expiringSoonCount > 0 && (
+                          <div className="flex items-center p-3 bg-yellow-50 rounded-lg">
+                            <Calendar className="h-5 w-5 text-yellow-500 mr-3" />
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-yellow-800">Expiry Alert</p>
+                              <p className="text-xs text-yellow-600">
+                                {alerts.summary.expiringSoonCount} medicines expiring in 30 days
+                              </p>
+                            </div>
+                            <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+                              {alerts.summary.expiringSoonCount}
+                            </Badge>
+                          </div>
+                        )}
 
-                      {alerts.summary.lowStockCount === 0 && 
-                       alerts.summary.expiringSoonCount === 0 && 
-                       alerts.summary.expiredCount === 0 && (
-                        <div className="flex items-center p-3 bg-green-50 rounded-lg">
-                          <Package className="h-5 w-5 text-green-500 mr-3" />
-                          <div>
-                            <p className="text-sm font-medium text-green-800">All Good!</p>
-                            <p className="text-xs text-green-600">No urgent alerts at the moment</p>
+                        {alerts.summary.expiredCount > 0 && (
+                          <div className="flex items-center p-3 bg-red-100 rounded-lg">
+                            <AlertTriangle className="h-5 w-5 text-red-600 mr-3" />
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-red-900">Expired Medications</p>
+                              <p className="text-xs text-red-700">
+                                {alerts.summary.expiredCount} medicines have expired
+                              </p>
+                            </div>
+                            <Badge variant="destructive">{alerts.summary.expiredCount}</Badge>
                           </div>
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+                        )}
+
+                        {alerts.summary.lowStockCount === 0 && 
+                         alerts.summary.expiringSoonCount === 0 && 
+                         alerts.summary.expiredCount === 0 && (
+                          <div className="flex items-center p-3 bg-green-50 rounded-lg">
+                            <Package className="h-5 w-5 text-green-500 mr-3" />
+                            <div>
+                              <p className="text-sm font-medium text-green-800">All Good!</p>
+                              <p className="text-xs text-green-600">No urgent alerts at the moment</p>
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Smart Recommendations Sidebar */}
+            <div>
+              <SmartRecommendations />
+            </div>
           </div>
 
           {/* Quick Actions */}
@@ -334,9 +363,14 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </>
-      ) : (
-        /* Analytics Dashboard */
+      )}
+
+      {currentMode === 'analytics' && (
         <AnalyticsDashboard />
+      )}
+
+      {currentMode === 'ai' && (
+        <AIForecastDashboard />
       )}
     </div>
   );

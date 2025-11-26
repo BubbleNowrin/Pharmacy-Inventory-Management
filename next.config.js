@@ -2,7 +2,7 @@
 const nextConfig = {
   serverExternalPackages: ['mongoose'],
   experimental: {
-    turbo: false
+    // Remove turbo config as it's causing issues
   }
 }
 

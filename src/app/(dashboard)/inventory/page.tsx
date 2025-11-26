@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/table';
 import { AddMedicationDialog } from '@/components/inventory/add-medication-dialog';
 import { EditMedicationDialog } from '@/components/inventory/edit-medication-dialog';
+import SmartSearch from '@/components/ai/smart-search';
 import { Plus, Search, AlertTriangle, Calendar, Package, Edit } from 'lucide-react';
 import { IMedication } from '@/models/Medication';
 
@@ -150,6 +151,16 @@ export default function InventoryPage() {
         </Card>
       </div>
 
+      {/* Smart Search Component */}
+      <SmartSearch onResultSelect={(medication) => {
+        const element = document.getElementById(`medication-${medication._id}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          element.classList.add('bg-blue-50', 'transition-colors', 'duration-1000');
+          setTimeout(() => element.classList.remove('bg-blue-50'), 2000);
+        }
+      }} />
+
       {/* Search and Filters */}
       <Card>
         <CardHeader>
@@ -193,7 +204,7 @@ export default function InventoryPage() {
                 </TableHeader>
                 <TableBody>
                   {medications.map((medication) => (
-                    <TableRow key={medication._id}>
+                    <TableRow key={medication._id} id={`medication-${medication._id}`}>
                       <TableCell className="font-medium">{medication.name}</TableCell>
                       <TableCell>{medication.category}</TableCell>
                       <TableCell>

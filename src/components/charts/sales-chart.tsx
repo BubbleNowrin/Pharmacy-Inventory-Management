@@ -36,7 +36,7 @@ export function SalesChart({ data }: SalesChartProps) {
             <YAxis />
             <Tooltip 
               formatter={(value, name) => [
-                name === 'sales' ? `$${value.toFixed(2)}` : value,
+                name === 'sales' ? `$${Number(value).toFixed(2)}` : Number(value),
                 name === 'sales' ? 'Revenue' : 'Transactions'
               ]}
             />

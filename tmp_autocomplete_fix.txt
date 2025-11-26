@@ -1,8 +1,0 @@
-﻿                <Autocomplete
-                  options={medicationOptions}
-                  value={selectedMedication}
-                  onSelect={(value, option) => { setSelectedMedication(value); }}
-                  placeholder="Select medication..."
-                  searchPlaceholder="Type to search medications..."
-                  emptyMessage="No medications found matching your search."
-                />

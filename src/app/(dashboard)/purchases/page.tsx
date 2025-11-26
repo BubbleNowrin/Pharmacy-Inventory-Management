@@ -44,14 +44,28 @@ export default function PurchasesPage() {
   const [quantity, setQuantity] = useState<number>(1);
   const [unitPrice, setUnitPrice] = useState<number>(0);
   const [supplier, setSupplier] = useState<string>('');
+  const [suppliers, setSuppliers] = useState<Array<{_id: string, name: string}>>([]);
   const [batchNumber, setBatchNumber] = useState<string>('');
   const [expiryDate, setExpiryDate] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
+  const fetchSuppliers = async () => {
+    try {
+      const response = await fetch('/api/suppliers?active=true');
+      const result = await response.json();
+      if (result.success) {
+        setSuppliers(result.data);
+      }
+    } catch (error) {
+      console.error('Error fetching suppliers:', error);
+    }
+  };
+
   useEffect(() => {
     fetchMedications();
     fetchPurchases();
+    fetchSuppliers();
   }, []);
 
   const fetchMedications = async () => {
@@ -262,13 +276,18 @@ export default function PurchasesPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="supplier">Supplier</Label>
-                <Input
-                  id="supplier"
-                  placeholder="Enter supplier name..."
-                  value={supplier}
-                  onChange={(e) => setSupplier(e.target.value)}
-                  required
-                />
+                <Select value={supplier} onValueChange={setSupplier}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select supplier..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {suppliers.map((sup) => (
+                      <SelectItem key={sup._id} value={sup.name}>
+                        {sup.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-2">

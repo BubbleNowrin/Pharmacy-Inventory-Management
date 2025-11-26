@@ -46,7 +46,7 @@ export function TopSellingChart({ data }: TopSellingChartProps) {
             <YAxis />
             <Tooltip 
               formatter={(value, name) => [
-                name === 'revenue' ? `$${value.toFixed(2)}` : value,
+                name === 'revenue' ? `$${Number(value).toFixed(2)}` : Number(value),
                 name === 'revenue' ? 'Revenue' : 'Quantity Sold'
               ]}
             />

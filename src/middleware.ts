@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/jwt';
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
   console.log('Middleware called for:', pathname);
@@ -35,7 +35,7 @@ export function middleware(request: NextRequest) {
   }
   
   try {
-    const payload = verifyToken(token);
+    const payload = await verifyToken(token);
     
     // Add user info to request headers for API routes
     const requestHeaders = new Headers(request.headers);
@@ -50,6 +50,7 @@ export function middleware(request: NextRequest) {
     });
   } catch (error) {
     // Invalid token, clear cookie and redirect to login
+    console.error('Token verification error in middleware:', error);
     const response = NextResponse.redirect(new URL('/login', request.url));
     response.cookies.delete('token');
     return response;

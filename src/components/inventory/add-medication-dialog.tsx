@@ -118,18 +118,21 @@ export function AddMedicationDialog({ isOpen, onClose, onSuccess }: AddMedicatio
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Plus className="h-5 w-5" />
+        <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto p-0 gap-0">
+          <DialogHeader className="p-6 pb-4 border-b bg-gray-50/50">
+            <DialogTitle className="flex items-center gap-2 text-xl text-primary">
+              <div className="p-2 bg-primary/10 rounded-full">
+                <Plus className="h-5 w-5" />
+              </div>
               Add New Medication
             </DialogTitle>
             <DialogDescription>
-              Add a new medication to your inventory
+              Enter the details below to add a new medication to your inventory.
             </DialogDescription>
           </DialogHeader>
           
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="p-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Medicine Name *</Label>
@@ -276,6 +279,7 @@ export function AddMedicationDialog({ isOpen, onClose, onSuccess }: AddMedicatio
               </Button>
             </div>
           </form>
+          </div>
         </DialogContent>
       </Dialog>
 

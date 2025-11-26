@@ -123,9 +123,9 @@ export default function TestLoginPage() {
           )}
           
           <div className="text-xs text-gray-500 space-y-1">
-            <p>🔗 <a href="/login" className="text-blue-600">Normal Login</a></p>
-            <p>🔗 <a href="/register" className="text-blue-600">Register</a></p>
-            <p>🔗 <a href="/dashboard" className="text-blue-600">Dashboard (Direct)</a></p>
+            <p>🔗 <a href="/login" className="text-primary">Normal Login</a></p>
+            <p>🔗 <a href="/register" className="text-primary">Register</a></p>
+            <p>🔗 <a href="/dashboard" className="text-primary">Dashboard (Direct)</a></p>
           </div>
         </CardContent>
       </Card>

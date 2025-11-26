@@ -59,9 +59,9 @@ export default function DirectAccessPage() {
               </ul>
             </div>
 
-            <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-              <h3 className="font-bold text-blue-800 mb-2">🧪 Test Scenarios:</h3>
-              <ol className="text-sm text-blue-700 space-y-1">
+            <div className="mt-4 p-4 bg-teal-50 rounded-lg">
+              <h3 className="font-bold text-teal-800 mb-2">🧪 Test Scenarios:</h3>
+              <ol className="text-sm text-teal-700 space-y-1">
                 <li>1. Go to <strong>Inventory</strong> and click "Add Medication"</li>
                 <li>2. Create a medication with <strong>low quantity</strong> (below 10)</li>
                 <li>3. Create a medication with <strong>expiry date within 30 days</strong></li>

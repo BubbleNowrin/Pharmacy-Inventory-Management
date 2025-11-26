@@ -49,10 +49,10 @@ export async function POST(request: NextRequest) {
     
     // Set HTTP-only cookie for security
     response.cookies.set('token', token, {
-      httpOnly: true,
+      httpOnly: false, // Changed to false to allow client-side access if needed, or keep true and rely on localStorage
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
       path: '/'
     });
     

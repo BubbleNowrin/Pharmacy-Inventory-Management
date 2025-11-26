@@ -32,8 +32,13 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (response.ok) {
-        // Store user data in localStorage (token is now in HTTP-only cookie)
+        // Store user data in localStorage
         localStorage.setItem('user', JSON.stringify(data.user));
+        
+        // Also store token in localStorage for client-side API calls
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+        }
         
         // Redirect to dashboard
         window.location.href = '/dashboard';
@@ -94,7 +99,7 @@ export default function LoginPage() {
           </form>
           <div className="mt-4 text-center text-sm">
             Do not have an account?{' '}
-            <Link href="/register" className="text-blue-600 hover:underline">
+            <Link href="/register" className="text-primary hover:underline">
               Register here
             </Link>
           </div>

@@ -108,6 +108,15 @@ export default function SettingsPage() {
         const result = await response.json();
         setUsers(result.data || []);
       } else {
+        if (response.status === 401) {
+          // Token invalid or user not found - force logout
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          window.location.href = '/login';
+          return;
+        }
+        
         const errorResult = await response.json();
         console.error('Error fetching users:', errorResult.error);
         toast({
@@ -178,6 +187,14 @@ export default function SettingsPage() {
         body: JSON.stringify(submitData),
       });
 
+      if (response.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        window.location.href = '/login';
+        return;
+      }
+
       const result = await response.json();
 
       if (result.success) {
@@ -235,6 +252,14 @@ export default function SettingsPage() {
           'Authorization': `Bearer ${token}`
         }
       });
+
+      if (response.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        window.location.href = '/login';
+        return;
+      }
 
       const result = await response.json();
 

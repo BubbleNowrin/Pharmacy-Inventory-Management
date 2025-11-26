@@ -84,7 +84,7 @@ export function AIForecastDashboard() {
     return (
       <div className="space-y-6">
         <div className="flex items-center gap-3 mb-6">
-          <Brain className="h-8 w-8 text-blue-600" />
+          <Brain className="h-8 w-8 text-primary" />
           <div>
             <h2 className="text-2xl font-bold">AI-Powered Forecasting</h2>
             <p className="text-gray-600">Generating intelligent recommendations...</p>
@@ -111,7 +111,7 @@ export function AIForecastDashboard() {
     return (
       <div className="space-y-6">
         <div className="flex items-center gap-3 mb-6">
-          <Brain className="h-8 w-8 text-blue-600" />
+          <Brain className="h-8 w-8 text-primary" />
           <div>
             <h2 className="text-2xl font-bold">AI-Powered Forecasting</h2>
             <p className="text-gray-600">Intelligent demand forecasting and recommendations</p>
@@ -143,7 +143,7 @@ export function AIForecastDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Brain className="h-8 w-8 text-blue-600" />
+          <Brain className="h-8 w-8 text-primary" />
           <div>
             <h2 className="text-2xl font-bold">AI-Powered Forecasting</h2>
             <p className="text-gray-600">Intelligent demand forecasting and recommendations</p>
@@ -190,10 +190,10 @@ export function AIForecastDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">AI Insights</CardTitle>
-            <Brain className="h-4 w-4 text-blue-500" />
+            <Brain className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">{aiData.insights.length}</div>
+            <div className="text-2xl font-bold text-primary">{aiData.insights.length}</div>
             <p className="text-xs text-muted-foreground">Actionable recommendations</p>
           </CardContent>
         </Card>
@@ -218,7 +218,7 @@ export function AIForecastDashboard() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-blue-600" />
+            <Brain className="h-5 w-5 text-primary" />
             AI-Generated Insights
           </CardTitle>
           <CardDescription>
@@ -228,9 +228,9 @@ export function AIForecastDashboard() {
         <CardContent>
           <div className="space-y-3">
             {aiData.insights.map((insight, index) => (
-              <div key={index} className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                <p className="text-sm text-blue-900">{insight}</p>
+              <div key={index} className="flex items-start gap-3 p-3 bg-teal-50 rounded-lg">
+                <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                <p className="text-sm text-teal-900">{insight}</p>
               </div>
             ))}
           </div>

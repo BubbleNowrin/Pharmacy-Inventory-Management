@@ -146,18 +146,21 @@ export function EditMedicationDialog({ isOpen, onClose, onSuccess, medication }:
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Edit className="h-5 w-5" />
+      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto p-0 gap-0">
+        <DialogHeader className="p-6 pb-4 border-b bg-gray-50/50">
+          <DialogTitle className="flex items-center gap-2 text-xl text-primary">
+            <div className="p-2 bg-primary/10 rounded-full">
+              <Edit className="h-5 w-5" />
+            </div>
             Edit Medication
           </DialogTitle>
           <DialogDescription>
-            Update medication information
+            Update the medication information below.
           </DialogDescription>
         </DialogHeader>
         
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="p-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="name">Medicine Name *</Label>
@@ -306,6 +309,7 @@ export function EditMedicationDialog({ isOpen, onClose, onSuccess, medication }:
             </div>
           </div>
         </form>
+        </div>
       </DialogContent>
     </Dialog>
   );

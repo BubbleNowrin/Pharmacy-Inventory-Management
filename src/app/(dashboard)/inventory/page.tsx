@@ -156,8 +156,8 @@ export default function InventoryPage() {
         const element = document.getElementById(`medication-${medication._id}`);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          element.classList.add('bg-blue-50', 'transition-colors', 'duration-1000');
-          setTimeout(() => element.classList.remove('bg-blue-50'), 2000);
+          element.classList.add('bg-teal-50', 'transition-colors', 'duration-1000');
+          setTimeout(() => element.classList.remove('bg-teal-50'), 2000);
         }
       }} />
 

@@ -106,6 +106,12 @@ export async function verifyToken(token: string): Promise<TokenPayload> {
     }
     
     const [encodedHeader, encodedPayload, signature] = parts;
+    
+    // Basic format check
+    if (!encodedHeader || !encodedPayload || !signature) {
+      throw new Error('Invalid token parts');
+    }
+
     const data = `${encodedHeader}.${encodedPayload}`;
     
     // Verify signature

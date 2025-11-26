@@ -34,6 +34,10 @@ export async function GET(request: NextRequest) {
     const currentUser = await User.findById(decoded.userId).select('-password');
 
     if (!currentUser) {
+      const count = await User.countDocuments();
+      console.log(`User not found in database. JWT userId: ${decoded.userId}`);
+      console.log(`Available users count: ${count}`);
+      
       return NextResponse.json(
         { success: false, error: 'User not found' },
         { status: 401 }

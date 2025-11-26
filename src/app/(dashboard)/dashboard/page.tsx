@@ -4,10 +4,11 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Package, AlertTriangle, TrendingUp, DollarSign, Calendar, BarChart3, Brain, Activity } from 'lucide-react';
+import { Package, AlertTriangle, TrendingUp, DollarSign, Calendar, BarChart3, Brain, Activity, ArrowRight, Pill, Users } from 'lucide-react';
 import { AnalyticsDashboard } from '@/components/charts/analytics-dashboard';
 import { AIForecastDashboard } from '@/components/ai/ai-forecast-dashboard';
 import { SmartRecommendations } from '@/components/ai/smart-recommendations';
+import { cn } from '@/lib/utils';
 
 interface AlertData {
   lowStock: any[];
@@ -97,29 +98,35 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600">
-            {currentMode === 'overview' && 'Overview of your pharmacy inventory'}
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Dashboard</h1>
+          <p className="text-gray-500 mt-1">
+            {currentMode === 'overview' && 'Real-time overview of your pharmacy inventory'}
             {currentMode === 'analytics' && 'Advanced analytics and business intelligence'}
             {currentMode === 'ai' && 'AI-powered insights and forecasting'}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex bg-white p-1 rounded-xl border shadow-sm">
           {(['overview', 'analytics', 'ai'] as const).map((mode) => {
             const config = getModeConfig(mode);
             const IconComponent = config.icon;
+            const isActive = currentMode === mode;
             return (
-              <Button
+              <button
                 key={mode}
-                variant={currentMode === mode ? "default" : "outline"}
                 onClick={() => setCurrentMode(mode)}
+                className={cn(
+                  "flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+                  isActive 
+                    ? "bg-primary text-white shadow-sm" 
+                    : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                )}
               >
                 <IconComponent className="w-4 h-4 mr-2" />
                 {config.label}
-              </Button>
+              </button>
             );
           })}
         </div>
@@ -127,173 +134,141 @@ export default function DashboardPage() {
 
       {currentMode === 'overview' && (
         <>
-          {/* Overview Dashboard */}
+          {/* Overview Stats */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Medicines</CardTitle>
-                <Package className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{loading ? '...' : totalMedications}</div>
-                <p className="text-xs text-muted-foreground">
-                  Total items in inventory
-                </p>
+            <Card className="border-none shadow-md bg-white hover:shadow-lg transition-shadow duration-200">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between space-y-0 pb-2">
+                  <p className="text-sm font-medium text-gray-500">Total Medicines</p>
+                  <div className="p-2 bg-blue-50 rounded-lg">
+                    <Pill className="h-5 w-5 text-blue-600" />
+                  </div>
+                </div>
+                <div className="mt-3">
+                  <div className="text-3xl font-bold text-gray-900">{loading ? '...' : totalMedications}</div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    <span className="text-green-600 font-medium">↑ 12%</span> from last month
+                  </p>
+                </div>
               </CardContent>
             </Card>
             
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Low Stock Items</CardTitle>
-                <AlertTriangle className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-red-600">
-                  {loading ? '...' : alerts.summary.lowStockCount}
+            <Card className="border-none shadow-md bg-white hover:shadow-lg transition-shadow duration-200">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between space-y-0 pb-2">
+                  <p className="text-sm font-medium text-gray-500">Low Stock Items</p>
+                  <div className="p-2 bg-red-50 rounded-lg">
+                    <AlertTriangle className="h-5 w-5 text-red-600" />
+                  </div>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Requires immediate attention
-                </p>
+                <div className="mt-3">
+                  <div className="text-3xl font-bold text-gray-900">
+                    {loading ? '...' : alerts.summary.lowStockCount}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Requires immediate attention
+                  </p>
+                </div>
               </CardContent>
             </Card>
             
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Expiring Soon</CardTitle>
-                <TrendingUp className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-yellow-600">
-                  {loading ? '...' : alerts.summary.expiringSoonCount}
+            <Card className="border-none shadow-md bg-white hover:shadow-lg transition-shadow duration-200">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between space-y-0 pb-2">
+                  <p className="text-sm font-medium text-gray-500">Expiring Soon</p>
+                  <div className="p-2 bg-amber-50 rounded-lg">
+                    <Calendar className="h-5 w-5 text-amber-600" />
+                  </div>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Within next 30 days
-                </p>
+                <div className="mt-3">
+                  <div className="text-3xl font-bold text-gray-900">
+                    {loading ? '...' : alerts.summary.expiringSoonCount}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Within next 30 days
+                  </p>
+                </div>
               </CardContent>
             </Card>
             
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Inventory Value</CardTitle>
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {loading ? '...' : formatCurrency(inventoryValue)}
+            <Card className="border-none shadow-md bg-white hover:shadow-lg transition-shadow duration-200">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between space-y-0 pb-2">
+                  <p className="text-sm font-medium text-gray-500">Inventory Value</p>
+                  <div className="p-2 bg-emerald-50 rounded-lg">
+                    <DollarSign className="h-5 w-5 text-emerald-600" />
+                  </div>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Current stock value
-                </p>
+                <div className="mt-3">
+                  <div className="text-3xl font-bold text-gray-900">
+                    {loading ? '...' : formatCurrency(inventoryValue)}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Current stock value
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </div>
           
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            <div className="lg:col-span-2 space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Recent Activities</CardTitle>
-                  <CardDescription>
-                    Latest inventory movements
-                  </CardDescription>
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <div className="lg:col-span-2 space-y-8">
+              {/* Recent Activities */}
+              <Card className="border-none shadow-md overflow-hidden">
+                <CardHeader className="bg-white border-b border-gray-100 pb-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="text-lg font-bold text-gray-900">Recent Activities</CardTitle>
+                      <CardDescription className="text-gray-500">
+                        Latest inventory movements and alerts
+                      </CardDescription>
+                    </div>
+                    <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80 hover:bg-primary/5">
+                      View All <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
+                <CardContent className="p-0">
+                  <div className="divide-y divide-gray-100">
                     {loading ? (
-                      <div className="text-sm text-gray-500">Loading activities...</div>
+                      <div className="p-8 text-center text-gray-500">Loading activities...</div>
                     ) : (
                       <>
                         {alerts.lowStock.slice(0, 3).map((item, index) => (
-                          <div key={index} className="flex items-center">
-                            <div className="w-2 h-2 bg-red-500 rounded-full mr-3"></div>
-                            <div className="flex-1">
-                              <p className="text-sm font-medium">{item.name} - Low Stock</p>
-                              <p className="text-xs text-muted-foreground">
-                                {item.quantity} {item.unit} remaining (threshold: {item.lowStockThreshold})
-                              </p>
+                          <div key={index} className="flex items-center p-4 hover:bg-gray-50 transition-colors">
+                            <div className="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center mr-4 flex-shrink-0">
+                              <AlertTriangle className="h-5 w-5 text-red-600" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-semibold text-gray-900 truncate">{item.name}</p>
+                              <p className="text-xs text-gray-500">Low Stock Alert</p>
+                            </div>
+                            <div className="text-right">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                {item.quantity} {item.unit} left
+                              </span>
                             </div>
                           </div>
                         ))}
                         {alerts.expiringSoon.slice(0, 2).map((item, index) => (
-                          <div key={index} className="flex items-center">
-                            <div className="w-2 h-2 bg-yellow-500 rounded-full mr-3"></div>
-                            <div className="flex-1">
-                              <p className="text-sm font-medium">{item.name} - Expiring Soon</p>
-                              <p className="text-xs text-muted-foreground">
-                                Expires: {formatDate(item.expiryDate)}
-                              </p>
+                          <div key={index} className="flex items-center p-4 hover:bg-gray-50 transition-colors">
+                            <div className="h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center mr-4 flex-shrink-0">
+                              <Calendar className="h-5 w-5 text-amber-600" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-semibold text-gray-900 truncate">{item.name}</p>
+                              <p className="text-xs text-gray-500">Expiring Soon</p>
+                            </div>
+                            <div className="text-right">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                                {formatDate(item.expiryDate)}
+                              </span>
                             </div>
                           </div>
                         ))}
-                      </>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Alerts & Notifications</CardTitle>
-                  <CardDescription>
-                    Important updates that need your attention
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {loading ? (
-                      <div className="text-sm text-gray-500">Loading alerts...</div>
-                    ) : (
-                      <>
-                        {alerts.summary.lowStockCount > 0 && (
-                          <div className="flex items-center p-3 bg-red-50 rounded-lg">
-                            <AlertTriangle className="h-5 w-5 text-red-500 mr-3" />
-                            <div className="flex-1">
-                              <p className="text-sm font-medium text-red-800">Critical Stock Level</p>
-                              <p className="text-xs text-red-600">
-                                {alerts.summary.lowStockCount} medicines below minimum threshold
-                              </p>
-                            </div>
-                            <Badge variant="destructive">{alerts.summary.lowStockCount}</Badge>
-                          </div>
-                        )}
-                        
-                        {alerts.summary.expiringSoonCount > 0 && (
-                          <div className="flex items-center p-3 bg-yellow-50 rounded-lg">
-                            <Calendar className="h-5 w-5 text-yellow-500 mr-3" />
-                            <div className="flex-1">
-                              <p className="text-sm font-medium text-yellow-800">Expiry Alert</p>
-                              <p className="text-xs text-yellow-600">
-                                {alerts.summary.expiringSoonCount} medicines expiring in 30 days
-                              </p>
-                            </div>
-                            <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-                              {alerts.summary.expiringSoonCount}
-                            </Badge>
-                          </div>
-                        )}
-
-                        {alerts.summary.expiredCount > 0 && (
-                          <div className="flex items-center p-3 bg-red-100 rounded-lg">
-                            <AlertTriangle className="h-5 w-5 text-red-600 mr-3" />
-                            <div className="flex-1">
-                              <p className="text-sm font-medium text-red-900">Expired Medications</p>
-                              <p className="text-xs text-red-700">
-                                {alerts.summary.expiredCount} medicines have expired
-                              </p>
-                            </div>
-                            <Badge variant="destructive">{alerts.summary.expiredCount}</Badge>
-                          </div>
-                        )}
-
-                        {alerts.summary.lowStockCount === 0 && 
-                         alerts.summary.expiringSoonCount === 0 && 
-                         alerts.summary.expiredCount === 0 && (
-                          <div className="flex items-center p-3 bg-green-50 rounded-lg">
-                            <Package className="h-5 w-5 text-green-500 mr-3" />
-                            <div>
-                              <p className="text-sm font-medium text-green-800">All Good!</p>
-                              <p className="text-xs text-green-600">No urgent alerts at the moment</p>
-                            </div>
+                        {alerts.lowStock.length === 0 && alerts.expiringSoon.length === 0 && (
+                          <div className="p-8 text-center text-gray-500">
+                            No recent alerts or activities.
                           </div>
                         )}
                       </>
@@ -301,67 +276,62 @@ export default function DashboardPage() {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Quick Actions Grid */}
+              <div>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Quick Actions</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <button 
+                    onClick={() => window.location.href = '/inventory'}
+                    className="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group"
+                  >
+                    <div className="h-12 w-12 bg-blue-50 rounded-full flex items-center justify-center mb-3 group-hover:bg-blue-100 transition-colors">
+                      <Package className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Add Medicine</span>
+                  </button>
+                  
+                  <button 
+                    onClick={() => window.location.href = '/sales'}
+                    className="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group"
+                  >
+                    <div className="h-12 w-12 bg-emerald-50 rounded-full flex items-center justify-center mb-3 group-hover:bg-emerald-100 transition-colors">
+                      <DollarSign className="h-6 w-6 text-emerald-600" />
+                    </div>
+                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Record Sale</span>
+                  </button>
+                  
+                  <button 
+                    onClick={() => window.location.href = '/purchases'}
+                    className="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group"
+                  >
+                    <div className="h-12 w-12 bg-purple-50 rounded-full flex items-center justify-center mb-3 group-hover:bg-purple-100 transition-colors">
+                      <TrendingUp className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Add Purchase</span>
+                  </button>
+                  
+                  <button 
+                    onClick={() => window.location.href = '/suppliers'}
+                    className="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group"
+                  >
+                    <div className="h-12 w-12 bg-orange-50 rounded-full flex items-center justify-center mb-3 group-hover:bg-orange-100 transition-colors">
+                      <Users className="h-6 w-6 text-orange-600" />
+                    </div>
+                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Suppliers</span>
+                  </button>
+                </div>
+              </div>
             </div>
 
-            {/* Smart Recommendations Sidebar */}
-            <div>
-              <SmartRecommendations />
+            {/* Right Sidebar Column */}
+            <div className="space-y-8">
+              {/* Smart Recommendations */}
+              <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-1 h-full">
+                <SmartRecommendations />
+              </div>
             </div>
           </div>
-
-          {/* Quick Actions */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
-              <CardDescription>
-                Jump to common tasks
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5">
-                <Button 
-                  variant="outline" 
-                  className="h-20 flex-col"
-                  onClick={() => window.location.href = '/inventory'}
-                >
-                  <Package className="h-6 w-6 mb-2" />
-                  <span className="text-sm">Add Medication</span>
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="h-20 flex-col"
-                  onClick={() => window.location.href = '/sales'}
-                >
-                  <DollarSign className="h-6 w-6 mb-2" />
-                  <span className="text-sm">Record Sale</span>
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="h-20 flex-col"
-                  onClick={() => window.location.href = '/purchases'}
-                >
-                  <TrendingUp className="h-6 w-6 mb-2" />
-                  <span className="text-sm">Add Purchase</span>
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="h-20 flex-col"
-                  onClick={() => window.location.href = '/inventory-logs'}
-                >
-                  <Activity className="h-6 w-6 mb-2" />
-                  <span className="text-sm">View Logs</span>
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="h-20 flex-col"
-                  onClick={() => window.location.href = '/adjustments'}
-                >
-                  <AlertTriangle className="h-6 w-6 mb-2" />
-                  <span className="text-sm">Adjustments</span>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
         </>
       )}
 

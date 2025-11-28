@@ -17,7 +17,7 @@ export default function RegisterPage() {
   const [role, setRole] = useState('cashier');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState<{ role: string; pharmacy?: { name: string } } | null>(null);
   const router = useRouter();
 
   useEffect(() => {

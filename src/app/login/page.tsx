@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Activity, ArrowRight } from 'lucide-react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -53,8 +54,35 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      {/* Navigation Header */}
+      <header className="sticky top-0 z-50 w-full border-b border-border bg-white/80 backdrop-blur-md">
+        <div className="container mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="p-2 bg-primary rounded-lg">
+              <Activity className="h-6 w-6 text-primary-foreground" />
+            </div>
+            <span className="font-bold text-2xl text-primary">PharmaCare</span>
+          </Link>
+          <nav className="hidden md:flex gap-8 text-sm font-medium">
+            <Link href="/#features" className="text-foreground/70 hover:text-primary transition-colors">Features</Link>
+            <Link href="/#benefits" className="text-foreground/70 hover:text-primary transition-colors">Benefits</Link>
+            <Link href="/#how-it-works" className="text-foreground/70 hover:text-primary transition-colors">How It Works</Link>
+          </nav>
+          <div className="flex items-center gap-3">
+            <Link href="/register-pharmacy">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-md">
+                Register Pharmacy
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <div className="flex-1 flex items-center justify-center py-12">
+        <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Login to Pharmacy System</CardTitle>
           <CardDescription>
@@ -112,7 +140,8 @@ export default function LoginPage() {
             </div>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 }

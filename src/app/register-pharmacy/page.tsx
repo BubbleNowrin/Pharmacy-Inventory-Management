@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { Activity, ArrowRight } from 'lucide-react';
 
 export default function RegisterPharmacyPage() {
   const router = useRouter();
@@ -98,16 +100,42 @@ export default function RegisterPharmacyPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Register Your Pharmacy
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Join our pharmacy management system
-          </p>
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      {/* Navigation Header */}
+      <header className="sticky top-0 z-50 w-full border-b border-border bg-white/80 backdrop-blur-md">
+        <div className="container mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="p-2 bg-primary rounded-lg">
+              <Activity className="h-6 w-6 text-primary-foreground" />
+            </div>
+            <span className="font-bold text-2xl text-primary">PharmaCare</span>
+          </Link>
+          <nav className="hidden md:flex gap-8 text-sm font-medium">
+            <Link href="/#features" className="text-foreground/70 hover:text-primary transition-colors">Features</Link>
+            <Link href="/#benefits" className="text-foreground/70 hover:text-primary transition-colors">Benefits</Link>
+            <Link href="/#how-it-works" className="text-foreground/70 hover:text-primary transition-colors">How It Works</Link>
+          </nav>
+          <div className="flex items-center gap-3">
+            <Link href="/login">
+              <Button variant="ghost" className="text-foreground/70 hover:text-primary hover:bg-primary/5">
+                Sign In
+              </Button>
+            </Link>
+          </div>
         </div>
+      </header>
+
+      {/* Main Content */}
+      <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl w-full space-y-8">
+          <div>
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+              Register Your Pharmacy
+            </h2>
+            <p className="mt-2 text-center text-sm text-gray-600">
+              Join our pharmacy management system
+            </p>
+          </div>
 
         <Card>
           <CardHeader>
@@ -331,6 +359,7 @@ export default function RegisterPharmacyPage() {
             </form>
           </CardContent>
         </Card>
+        </div>
       </div>
     </div>
   );

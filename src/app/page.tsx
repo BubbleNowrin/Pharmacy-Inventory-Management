@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,6 +26,111 @@ import {
 export default function Home() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <style jsx global>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(40px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-40px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes fadeInRight {
+          from {
+            opacity: 0;
+            transform: translateX(40px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-25px) rotate(8deg);
+          }
+        }
+
+        @keyframes floatSlow {
+          0%, 100% {
+            transform: translateY(0px) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-20px) rotate(-5deg);
+          }
+        }
+
+        .animate-fadeInUp {
+          animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .animate-fadeInLeft {
+          animation: fadeInLeft 1s ease-out forwards;
+        }
+
+        .animate-fadeInRight {
+          animation: fadeInRight 1s ease-out forwards;
+        }
+
+        .animate-float {
+          animation: float 4s ease-in-out infinite;
+        }
+
+        .animate-floatSlow {
+          animation: floatSlow 5s ease-in-out infinite;
+        }
+
+        .delay-100 {
+          animation-delay: 0.15s;
+        }
+
+        .delay-200 {
+          animation-delay: 0.3s;
+        }
+
+        .delay-300 {
+          animation-delay: 0.45s;
+        }
+
+        .delay-400 {
+          animation-delay: 0.6s;
+        }
+
+        .delay-500 {
+          animation-delay: 0.75s;
+        }
+
+        .delay-600 {
+          animation-delay: 0.9s;
+        }
+
+        /* Ensure animations play on page load */
+        .animate-on-scroll {
+          opacity: 0;
+        }
+
+        .animate-on-scroll.visible {
+          animation: fadeInUp 1s ease-out forwards;
+        }
+      `}</style>
       {/* Navigation / Header */}
       <header className="sticky top-0 z-50 w-full border-b border-border bg-white/80 backdrop-blur-md">
         <div className="container mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
@@ -58,34 +165,35 @@ export default function Home() {
         {/* Hero Section */}
         <section className="relative py-16 lg:py-24 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-contrast-lime/20 via-background to-contrast-teal/20"></div>
+          
           <div className="container mx-auto px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-8">
-                <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">
+                <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 animate-fadeInUp">
                   <Sparkles className="h-3 w-3 mr-1" />
                   AI-Powered with Groq API
                 </Badge>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary leading-tight animate-fadeInUp delay-100">
                   Complete Pharmacy Inventory Management System
                 </h1>
-                <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
+                <p className="text-lg md:text-xl text-foreground/70 leading-relaxed animate-fadeInUp delay-200">
                   Full-featured inventory management with AI forecasting, barcode scanning, and real-time analytics. 
                   Built with Next.js 15, MongoDB, and Groq AI for intelligent stock predictions.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col sm:flex-row gap-4 animate-fadeInUp delay-300">
                   <Link href="/register">
-                    <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg w-full sm:w-auto">
+                    <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg w-full sm:w-auto hover:scale-105 transition-transform duration-300">
                       Start Free Trial
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </Link>
                   <Link href="/login">
-                    <Button size="lg" variant="outline" className="border-primary/20 text-primary hover:bg-primary/5 w-full sm:w-auto">
+                    <Button size="lg" variant="outline" className="border-primary/20 text-primary hover:bg-primary/5 w-full sm:w-auto hover:scale-105 transition-transform duration-300">
                       View Demo Dashboard
                     </Button>
                   </Link>
                 </div>
-                <div className="pt-6 flex flex-wrap items-center gap-6 text-sm">
+                <div className="pt-6 flex flex-wrap items-center gap-6 text-sm animate-fadeInUp delay-400">
                   <div className="flex items-center gap-2 text-foreground/70">
                     <CheckCircle2 className="h-5 w-5 text-primary" />
                     <span>No credit card required</span>
@@ -98,7 +206,7 @@ export default function Home() {
               </div>
               
               {/* Dashboard Preview */}
-              <div className="relative mx-auto w-full max-w-[600px] lg:max-w-none">
+              <div className="relative mx-auto w-full max-w-[600px] lg:max-w-none animate-fadeInRight delay-300">
                 <div className="relative rounded-2xl bg-white/50 backdrop-blur-sm p-3 shadow-2xl border border-border">
                   <div className="rounded-xl bg-white shadow-lg overflow-hidden border border-border">
                     <div className="w-full aspect-[16/10] bg-background flex flex-col">
@@ -155,19 +263,19 @@ export default function Home() {
         <section className="py-12 bg-white border-y border-border">
           <div className="container mx-auto px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              <div className="text-center">
+              <div className="text-center animate-fadeInUp">
                 <div className="text-3xl md:text-4xl font-bold text-primary mb-2">3 Roles</div>
                 <div className="text-sm text-foreground/60">Admin, Pharmacist, Cashier</div>
               </div>
-              <div className="text-center">
+              <div className="text-center animate-fadeInUp delay-100">
                 <div className="text-3xl md:text-4xl font-bold text-primary mb-2">AI-Powered</div>
                 <div className="text-sm text-foreground/60">Groq API Integration</div>
               </div>
-              <div className="text-center">
+              <div className="text-center animate-fadeInUp delay-200">
                 <div className="text-3xl md:text-4xl font-bold text-primary mb-2">Real-Time</div>
                 <div className="text-sm text-foreground/60">Inventory Tracking</div>
               </div>
-              <div className="text-center">
+              <div className="text-center animate-fadeInUp delay-300">
                 <div className="text-3xl md:text-4xl font-bold text-primary mb-2">Barcode</div>
                 <div className="text-sm text-foreground/60">Scanner Integration</div>
               </div>
@@ -176,9 +284,9 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="py-20 lg:py-28">
-          <div className="container mx-auto px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16">
+        <section id="features" className="py-20 lg:py-28 relative overflow-hidden">
+          <div className="container mx-auto px-6 lg:px-8 relative z-10">
+            <div className="text-center max-w-3xl mx-auto mb-16 animate-fadeInUp">
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
                 Complete Feature Set for Modern Pharmacies
               </h2>
@@ -188,7 +296,7 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card className="bg-white border-border shadow-md hover:shadow-lg transition-all duration-300 hover:border-primary/20">
+              <Card className="bg-white border-border shadow-md hover:shadow-lg transition-all duration-300 hover:border-primary/20 hover:scale-105 animate-fadeInUp rounded-3xl">
                 <CardContent className="p-6">
                   <div className="p-3 bg-contrast-lime/40 rounded-lg w-fit mb-4">
                     <Package className="h-6 w-6 text-primary" />
@@ -200,7 +308,7 @@ export default function Home() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white border-border shadow-md hover:shadow-lg transition-all duration-300 hover:border-primary/20">
+              <Card className="bg-white border-border shadow-md hover:shadow-lg transition-all duration-300 hover:border-primary/20 hover:scale-105 animate-fadeInUp delay-100 rounded-3xl">
                 <CardContent className="p-6">
                   <div className="p-3 bg-contrast-teal/40 rounded-lg w-fit mb-4">
                     <DollarSign className="h-6 w-6 text-primary" />
@@ -212,7 +320,7 @@ export default function Home() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white border-border shadow-md hover:shadow-lg transition-all duration-300 hover:border-primary/20">
+              <Card className="bg-white border-border shadow-md hover:shadow-lg transition-all duration-300 hover:border-primary/20 hover:scale-105 animate-fadeInUp delay-200 rounded-3xl">
                 <CardContent className="p-6">
                   <div className="p-3 bg-contrast-pink/40 rounded-lg w-fit mb-4">
                     <BarChart3 className="h-6 w-6 text-primary" />
@@ -224,7 +332,7 @@ export default function Home() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white border-border shadow-md hover:shadow-lg transition-all duration-300 hover:border-primary/20">
+              <Card className="bg-white border-border shadow-md hover:shadow-lg transition-all duration-300 hover:border-primary/20 hover:scale-105 animate-fadeInUp delay-300 rounded-3xl">
                 <CardContent className="p-6">
                   <div className="p-3 bg-contrast-lavender/40 rounded-lg w-fit mb-4">
                     <Brain className="h-6 w-6 text-primary" />
@@ -236,7 +344,7 @@ export default function Home() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white border-border shadow-md hover:shadow-lg transition-all duration-300 hover:border-primary/20">
+              <Card className="bg-white border-border shadow-md hover:shadow-lg transition-all duration-300 hover:border-primary/20 hover:scale-105 animate-fadeInUp delay-400 rounded-3xl">
                 <CardContent className="p-6">
                   <div className="p-3 bg-contrast-lime/40 rounded-lg w-fit mb-4">
                     <Users className="h-6 w-6 text-primary" />
@@ -248,7 +356,7 @@ export default function Home() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white border-border shadow-md hover:shadow-lg transition-all duration-300 hover:border-primary/20">
+              <Card className="bg-white border-border shadow-md hover:shadow-lg transition-all duration-300 hover:border-primary/20 hover:scale-105 animate-fadeInUp delay-500 rounded-3xl">
                 <CardContent className="p-6">
                   <div className="p-3 bg-contrast-teal/40 rounded-lg w-fit mb-4">
                     <Shield className="h-6 w-6 text-primary" />
@@ -264,10 +372,10 @@ export default function Home() {
         </section>
 
         {/* Benefits Section */}
-        <section id="benefits" className="py-20 lg:py-28 bg-white border-y border-border">
-          <div className="container mx-auto px-6 lg:px-8">
+        <section id="benefits" className="py-20 lg:py-28 bg-white border-y border-border relative overflow-hidden">
+          <div className="container mx-auto px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div>
+              <div className="animate-fadeInLeft">
                 <Badge className="bg-primary/10 text-primary border-primary/20 mb-6">
                   Production-Ready System
                 </Badge>
@@ -275,7 +383,7 @@ export default function Home() {
                   Built with Modern Tech Stack
                 </h2>
                 <div className="space-y-6">
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 hover:translate-x-2 transition-transform duration-300">
                     <div className="flex-shrink-0">
                       <div className="p-2 bg-contrast-lime/40 rounded-lg">
                         <Clock className="h-5 w-5 text-primary" />
@@ -289,7 +397,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 hover:translate-x-2 transition-transform duration-300">
                     <div className="flex-shrink-0">
                       <div className="p-2 bg-contrast-pink/40 rounded-lg">
                         <AlertTriangle className="h-5 w-5 text-primary" />
@@ -303,7 +411,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 hover:translate-x-2 transition-transform duration-300">
                     <div className="flex-shrink-0">
                       <div className="p-2 bg-contrast-teal/40 rounded-lg">
                         <TrendingUp className="h-5 w-5 text-primary" />
@@ -317,7 +425,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 hover:translate-x-2 transition-transform duration-300">
                     <div className="flex-shrink-0">
                       <div className="p-2 bg-contrast-lavender/40 rounded-lg">
                         <Zap className="h-5 w-5 text-primary" />
@@ -333,33 +441,33 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <Card className="bg-contrast-lime border-none shadow-md">
-                  <CardContent className="p-6">
-                    <Package className="h-8 w-8 text-primary mb-3" />
-                    <div className="text-3xl font-bold text-primary mb-1">Full CRUD</div>
-                    <div className="text-sm text-primary/70">Medication Management</div>
+              <div className="grid grid-cols-2 gap-4 animate-fadeInRight">
+                <Card className="border-none shadow-lg hover:scale-105 transition-transform duration-300 rounded-full aspect-square flex items-center justify-center" style={{background: 'linear-gradient(135deg, #d8f1b7 0%, #c5e8a0 100%)'}}>
+                  <CardContent className="p-6 text-center">
+                    <Package className="h-10 w-10 text-primary mb-3 mx-auto" />
+                    <div className="text-2xl font-bold text-primary mb-1">Full CRUD</div>
+                    <div className="text-xs text-primary/70">Medication Management</div>
                   </CardContent>
                 </Card>
-                <Card className="bg-contrast-teal border-none shadow-md mt-8">
-                  <CardContent className="p-6">
-                    <DollarSign className="h-8 w-8 text-primary mb-3" />
-                    <div className="text-3xl font-bold text-primary mb-1">POS</div>
-                    <div className="text-sm text-primary/70">Sales Interface</div>
+                <Card className="border-none shadow-lg mt-8 hover:scale-105 transition-transform duration-300 rounded-full aspect-square flex items-center justify-center" style={{background: 'linear-gradient(135deg, #98d9d1 0%, #7fc9bf 100%)'}}>
+                  <CardContent className="p-6 text-center">
+                    <DollarSign className="h-10 w-10 text-primary mb-3 mx-auto" />
+                    <div className="text-2xl font-bold text-primary mb-1">POS</div>
+                    <div className="text-xs text-primary/70">Sales Interface</div>
                   </CardContent>
                 </Card>
-                <Card className="bg-contrast-pink border-none shadow-md -mt-4">
-                  <CardContent className="p-6">
-                    <Calendar className="h-8 w-8 text-primary mb-3" />
-                    <div className="text-3xl font-bold text-primary mb-1">Groq AI</div>
-                    <div className="text-sm text-primary/70">Smart Forecasting</div>
+                <Card className="border-none shadow-lg -mt-4 hover:scale-105 transition-transform duration-300 rounded-full aspect-square flex items-center justify-center" style={{background: 'linear-gradient(135deg, #f1b5b9 0%, #efa4a9 100%)'}}>
+                  <CardContent className="p-6 text-center">
+                    <Calendar className="h-10 w-10 text-primary mb-3 mx-auto" />
+                    <div className="text-2xl font-bold text-primary mb-1">Groq AI</div>
+                    <div className="text-xs text-primary/70">Smart Forecasting</div>
                   </CardContent>
                 </Card>
-                <Card className="bg-contrast-lavender border-none shadow-md mt-4">
-                  <CardContent className="p-6">
-                    <FileText className="h-8 w-8 text-primary mb-3" />
-                    <div className="text-3xl font-bold text-primary mb-1">3 Roles</div>
-                    <div className="text-sm text-primary/70">RBAC System</div>
+                <Card className="border-none shadow-lg mt-4 hover:scale-105 transition-transform duration-300 rounded-full aspect-square flex items-center justify-center" style={{background: 'linear-gradient(135deg, #b4bef0 0%, #a0ace8 100%)'}}>
+                  <CardContent className="p-6 text-center">
+                    <FileText className="h-10 w-10 text-primary mb-3 mx-auto" />
+                    <div className="text-2xl font-bold text-primary mb-1">3 Roles</div>
+                    <div className="text-xs text-primary/70">RBAC System</div>
                   </CardContent>
                 </Card>
               </div>
@@ -368,9 +476,9 @@ export default function Home() {
         </section>
 
         {/* How It Works */}
-        <section id="how-it-works" className="py-20 lg:py-28">
-          <div className="container mx-auto px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16">
+        <section id="how-it-works" className="py-20 lg:py-28 relative overflow-hidden">
+          <div className="container mx-auto px-6 lg:px-8 relative z-10">
+            <div className="text-center max-w-3xl mx-auto mb-16 animate-fadeInUp">
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
                 Quick Setup Process
               </h2>
@@ -380,8 +488,8 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <div className="text-center">
-                <div className="mx-auto w-16 h-16 bg-contrast-lime rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+              <div className="text-center animate-fadeInUp delay-100 hover:scale-105 transition-transform duration-300">
+                <div className="mx-auto w-20 h-20 bg-contrast-lime rounded-full flex items-center justify-center mb-6 shadow-lg hover:shadow-xl transition-shadow">
                   <span className="text-2xl font-bold text-primary">1</span>
                 </div>
                 <h3 className="font-semibold text-xl text-primary mb-3">Register & Configure</h3>
@@ -390,8 +498,8 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="text-center">
-                <div className="mx-auto w-16 h-16 bg-contrast-teal rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+              <div className="text-center animate-fadeInUp delay-200 hover:scale-105 transition-transform duration-300">
+                <div className="mx-auto w-20 h-20 bg-contrast-teal rounded-full flex items-center justify-center mb-6 shadow-lg hover:shadow-xl transition-shadow">
                   <span className="text-2xl font-bold text-primary">2</span>
                 </div>
                 <h3 className="font-semibold text-xl text-primary mb-3">Import Inventory Data</h3>
@@ -400,8 +508,8 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="text-center">
-                <div className="mx-auto w-16 h-16 bg-contrast-lavender rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+              <div className="text-center animate-fadeInUp delay-300 hover:scale-105 transition-transform duration-300">
+                <div className="mx-auto w-20 h-20 bg-contrast-lavender rounded-full flex items-center justify-center mb-6 shadow-lg hover:shadow-xl transition-shadow">
                   <span className="text-2xl font-bold text-primary">3</span>
                 </div>
                 <h3 className="font-semibold text-xl text-primary mb-3">Start Using Features</h3>
@@ -411,9 +519,9 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="mt-16 text-center">
+            <div className="mt-16 text-center animate-fadeInUp delay-400">
               <Link href="/register">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg">
+                <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:scale-105 transition-transform duration-300">
                   Get Started Now - It's Free
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -421,8 +529,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-       
 
         {/* Footer */}
         <footer className="bg-white border-t border-border py-6">

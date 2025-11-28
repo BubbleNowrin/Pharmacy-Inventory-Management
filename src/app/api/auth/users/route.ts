@@ -23,8 +23,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Only pharmacy_admin (or legacy 'admin') can access user list for their pharmacy
-    if (context.userRole !== 'pharmacy_admin' && context.userRole !== 'admin' && context.userRole !== 'super_admin') {
+    // Only pharmacy_admin or super_admin can access user list for their pharmacy
+    if (context.userRole !== 'pharmacy_admin' && context.userRole !== 'super_admin') {
       return NextResponse.json(
         { error: 'Access denied. Pharmacy admin role required.' },
         { status: 403 }
@@ -78,8 +78,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Only pharmacy_admin (or legacy 'admin') can create users for their pharmacy
-    if (context.userRole !== 'pharmacy_admin' && context.userRole !== 'admin') {
+    // Only pharmacy_admin or super_admin can create users for their pharmacy
+    if (context.userRole !== 'pharmacy_admin' && context.userRole !== 'super_admin') {
       return NextResponse.json(
         { error: 'Access denied. Pharmacy admin role required.' },
         { status: 403 }

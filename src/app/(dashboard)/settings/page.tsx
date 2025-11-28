@@ -317,8 +317,8 @@ export default function SettingsPage() {
     );
   }
 
-  // Check if current user is admin (support legacy 'admin' role)
-  const isAdmin = currentUser?.role === 'pharmacy_admin' || currentUser?.role === 'admin';
+  // Check if current user is admin
+  const isAdmin = currentUser?.role === 'pharmacy_admin';
 
   return (
     <div className="p-6 space-y-6">

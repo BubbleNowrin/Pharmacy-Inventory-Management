@@ -1,59 +1,42 @@
 import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
 import dbConnect from '@/lib/mongodb';
 import User from '@/models/User';
 import { verifyToken } from '@/lib/jwt';
+import { getTenantContext, validateTenantAccess, buildTenantQuery } from '@/lib/multi-tenant-utils';
 
 export async function GET(request: NextRequest) {
   try {
     await dbConnect();
     
-    // Check for authentication token
-    const authHeader = request.headers.get('authorization');
-    const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : 
-                  request.cookies.get('token')?.value;
-
-
-    if (!token) {
+    // Validate tenant access
+    const context = getTenantContext(request);
+    console.log('GET /api/auth/users - Tenant context:', context);
+    
+    const validation = validateTenantAccess(context);
+    
+    if (!validation.isValid) {
+      console.error('GET /api/auth/users - Validation failed:', validation.error);
       return NextResponse.json(
-        { success: false, error: 'Authentication required' },
-        { status: 401 }
+        { error: validation.error },
+        { status: 400 }
       );
     }
 
-    // Verify token and get user info
-    let decoded;
-    try {
-      decoded = await verifyToken(token);
-    } catch (jwtError) {
-      console.error('JWT verification failed:', jwtError);
+    // Only pharmacy_admin (or legacy 'admin') can access user list for their pharmacy
+    if (context.userRole !== 'pharmacy_admin' && context.userRole !== 'admin' && context.userRole !== 'super_admin') {
       return NextResponse.json(
-        { success: false, error: 'Invalid or expired token' },
-        { status: 401 }
-      );
-    }
-    const currentUser = await User.findById(decoded.userId).select('-password');
-
-    if (!currentUser) {
-      const count = await User.countDocuments();
-      console.log(`User not found in database. JWT userId: ${decoded.userId}`);
-      console.log(`Available users count: ${count}`);
-      
-      return NextResponse.json(
-        { success: false, error: 'User not found' },
-        { status: 401 }
-      );
-    }
-
-    // Only admins can access user list
-    if (currentUser.role !== 'admin') {
-      return NextResponse.json(
-        { success: false, error: 'Access denied. Admin role required.' },
+        { error: 'Access denied. Pharmacy admin role required.' },
         { status: 403 }
       );
     }
 
-    // Fetch all users (exclude passwords)
-    const users = await User.find({}).select('-password').sort({ createdAt: -1 });
+    // Build query to get users from the same pharmacy
+    const query = buildTenantQuery(context);
+    const users = await User.find(query)
+      .select('-password')
+      .populate('pharmacyId', 'name licenseNumber')
+      .sort({ createdAt: -1 });
 
     return NextResponse.json({
       success: true,
@@ -81,34 +64,24 @@ export async function POST(request: NextRequest) {
   try {
     await dbConnect();
     
-    // Check for authentication token
-    const authHeader = request.headers.get('authorization');
-    const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : 
-                  request.cookies.get('token')?.value;
-
-    if (!token) {
+    // Validate tenant access
+    const context = getTenantContext(request);
+    console.log('POST /api/auth/users - Tenant context:', context);
+    
+    const validation = validateTenantAccess(context);
+    
+    if (!validation.isValid) {
+      console.error('POST /api/auth/users - Validation failed:', validation.error);
       return NextResponse.json(
-        { success: false, error: 'Authentication required' },
-        { status: 401 }
+        { error: validation.error },
+        { status: 400 }
       );
     }
 
-    // Verify token and get user info
-    let decoded;
-    try {
-      decoded = await verifyToken(token);
-    } catch (jwtError) {
-      console.error('JWT verification failed:', jwtError);
+    // Only pharmacy_admin (or legacy 'admin') can create users for their pharmacy
+    if (context.userRole !== 'pharmacy_admin' && context.userRole !== 'admin') {
       return NextResponse.json(
-        { success: false, error: 'Invalid or expired token' },
-        { status: 401 }
-      );
-    }
-    const currentUser = await User.findById(decoded.userId).select('-password');
-
-    if (!currentUser || currentUser.role !== 'admin') {
-      return NextResponse.json(
-        { success: false, error: 'Access denied. Admin role required.' },
+        { error: 'Access denied. Pharmacy admin role required.' },
         { status: 403 }
       );
     }
@@ -131,32 +104,42 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ email: email.toLowerCase() });
+    // Check if user already exists in this pharmacy
+    const existingUser = await User.findOne({ 
+      email: email.toLowerCase(),
+      pharmacyId: context.pharmacyId 
+    });
     if (existingUser) {
       return NextResponse.json(
-        { success: false, error: 'User with this email already exists' },
+        { error: 'User with this email already exists in your pharmacy' },
         { status: 400 }
       );
     }
 
-    // Create new user
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    // Create new user with pharmacy association
     const user = new User({
       name: name.trim(),
       email: email.toLowerCase().trim(),
-      password, // The User model will hash this automatically
-      role
+      password: hashedPassword,
+      role,
+      pharmacyId: context.pharmacyId,
+      isActive: true
     });
 
     await user.save();
 
     // Return user without password
-    const userResponse = await User.findById(user._id).select('-password');
+    const userResponse = await User.findById(user._id)
+      .select('-password')
+      .populate('pharmacyId', 'name licenseNumber');
 
     return NextResponse.json({
       success: true,
       message: 'User created successfully',
-      data: userResponse
+      user: userResponse
     }, { status: 201 });
 
   } catch (error: any) {
@@ -170,7 +153,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { success: false, error: 'Failed to create user' },
+      { error: 'Failed to create user' },
       { status: 500 }
     );
   }

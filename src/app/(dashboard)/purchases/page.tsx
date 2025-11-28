@@ -9,8 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Autocomplete } from '@/components/ui/autocomplete';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { TrendingUp, Package, Calendar } from 'lucide-react';
+import { TrendingUp, Package, Calendar, AlertCircle, Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 interface Medication {
   _id: string;
@@ -276,18 +277,33 @@ export default function PurchasesPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="supplier">Supplier</Label>
-                <Select value={supplier} onValueChange={setSupplier}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select supplier..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {suppliers.map((sup) => (
-                      <SelectItem key={sup._id} value={sup.name}>
-                        {sup.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                {suppliers.length === 0 ? (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 p-3 border border-orange-200 rounded-md bg-orange-50">
+                      <AlertCircle className="h-4 w-4 text-orange-600" />
+                      <span className="text-sm text-orange-800">No suppliers found</span>
+                    </div>
+                    <Link href="/suppliers">
+                      <Button type="button" variant="outline" size="sm" className="w-full">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Suppliers First
+                      </Button>
+                    </Link>
+                  </div>
+                ) : (
+                  <Select value={supplier} onValueChange={setSupplier}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select supplier..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {suppliers.map((sup) => (
+                        <SelectItem key={sup._id} value={sup.name}>
+                          {sup.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -333,7 +349,7 @@ export default function PurchasesPage() {
                 </div>
               )}
 
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button type="submit" className="w-full" disabled={isLoading || suppliers.length === 0}>
                 {isLoading ? "Recording Purchase..." : "Record Purchase"}
               </Button>
             </form>

@@ -9,12 +9,21 @@ export async function GET(request: NextRequest) {
   try {
     await dbConnect();
     
+    // Extract pharmacyId from headers set by middleware
+    const pharmacyId = request.headers.get('x-pharmacy-id');
+    if (!pharmacyId) {
+      return NextResponse.json(
+        { error: 'Pharmacy ID required' },
+        { status: 400 }
+      );
+    }
+    
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '50');
     const skip = (page - 1) * limit;
     
-    const sales = await Sale.find({})
+    const sales = await Sale.find({ pharmacyId })
       .populate('medicineId', 'name category unit')
       .sort({ createdAt: -1 })
       .skip(skip)
@@ -26,7 +35,7 @@ export async function GET(request: NextRequest) {
       medication: sale.medicineId
     }));
     
-    const total = await Sale.countDocuments({});
+    const total = await Sale.countDocuments({ pharmacyId });
     
     return NextResponse.json({
       sales: transformedSales,
@@ -52,6 +61,16 @@ export async function POST(request: NextRequest) {
 
   try {
     await dbConnect();
+    
+    // Extract pharmacyId from headers set by middleware
+    const pharmacyId = request.headers.get('x-pharmacy-id');
+    if (!pharmacyId) {
+      await session.abortTransaction();
+      return NextResponse.json(
+        { error: 'Pharmacy ID required' },
+        { status: 400 }
+      );
+    }
     
     const { medicineId, quantity, unitPrice, customerName } = await request.json();
     
@@ -94,6 +113,7 @@ export async function POST(request: NextRequest) {
 
     // Create the sale record
     const sale = new Sale({
+      pharmacyId,
       medicineId,
       quantity,
       unitPrice,
@@ -115,6 +135,7 @@ export async function POST(request: NextRequest) {
 
     // Create inventory log entry
     await createInventoryLog(
+      pharmacyId,
       medicineId,
       'sale',
       -quantity, // Negative quantity for sales

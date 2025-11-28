@@ -62,6 +62,156 @@ const initialFormData: SupplierFormData = {
 
 const paymentTermsOptions = ['Net 15', 'Net 30', 'Net 45', 'Net 60', 'COD', 'Prepaid'];
 
+interface SupplierFormProps {
+  formData: SupplierFormData;
+  handleInputChange: (field: keyof SupplierFormData, value: string | boolean) => void;
+  handleSubmit: (e: React.FormEvent) => void;
+  submitting: boolean;
+  currentSupplier: Supplier | null;
+  onCancel: () => void;
+}
+
+const SupplierForm = ({ formData, handleInputChange, handleSubmit, submitting, currentSupplier, onCancel }: SupplierFormProps) => (
+  <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="grid grid-cols-2 gap-4">
+      <div>
+        <Label htmlFor="name">Company Name *</Label>
+        <Input
+          id="name"
+          value={formData.name}
+          onChange={(e) => handleInputChange('name', e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <Label htmlFor="contactPerson">Contact Person *</Label>
+        <Input
+          id="contactPerson"
+          value={formData.contactPerson}
+          onChange={(e) => handleInputChange('contactPerson', e.target.value)}
+          required
+        />
+      </div>
+    </div>
+
+    <div className="grid grid-cols-2 gap-4">
+      <div>
+        <Label htmlFor="email">Email *</Label>
+        <Input
+          id="email"
+          type="email"
+          value={formData.email}
+          onChange={(e) => handleInputChange('email', e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <Label htmlFor="phone">Phone *</Label>
+        <Input
+          id="phone"
+          value={formData.phone}
+          onChange={(e) => handleInputChange('phone', e.target.value)}
+          required
+        />
+      </div>
+    </div>
+
+    <div>
+      <Label htmlFor="address">Address *</Label>
+      <Input
+        id="address"
+        value={formData.address}
+        onChange={(e) => handleInputChange('address', e.target.value)}
+        required
+      />
+    </div>
+
+    <div className="grid grid-cols-3 gap-4">
+      <div>
+        <Label htmlFor="city">City *</Label>
+        <Input
+          id="city"
+          value={formData.city}
+          onChange={(e) => handleInputChange('city', e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <Label htmlFor="state">State *</Label>
+        <Input
+          id="state"
+          value={formData.state}
+          onChange={(e) => handleInputChange('state', e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <Label htmlFor="zipCode">Zip Code *</Label>
+        <Input
+          id="zipCode"
+          value={formData.zipCode}
+          onChange={(e) => handleInputChange('zipCode', e.target.value)}
+          required
+        />
+      </div>
+    </div>
+
+    <div className="grid grid-cols-2 gap-4">
+      <div>
+        <Label htmlFor="country">Country</Label>
+        <Input
+          id="country"
+          value={formData.country}
+          onChange={(e) => handleInputChange('country', e.target.value)}
+        />
+      </div>
+      <div>
+        <Label htmlFor="taxId">Tax ID</Label>
+        <Input
+          id="taxId"
+          value={formData.taxId}
+          onChange={(e) => handleInputChange('taxId', e.target.value)}
+        />
+      </div>
+    </div>
+
+    <div>
+      <Label htmlFor="paymentTerms">Payment Terms</Label>
+      <Select value={formData.paymentTerms} onValueChange={(value) => handleInputChange('paymentTerms', value)}>
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {paymentTermsOptions.map((term) => (
+            <SelectItem key={term} value={term}>
+              {term}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+
+    <div className="flex items-center space-x-2">
+      <input
+        type="checkbox"
+        id="isActive"
+        checked={formData.isActive}
+        onChange={(e) => handleInputChange('isActive', e.target.checked)}
+      />
+      <Label htmlFor="isActive">Active</Label>
+    </div>
+
+    <div className="flex justify-end space-x-2">
+      <Button type="button" variant="outline" onClick={onCancel}>
+        Cancel
+      </Button>
+      <Button type="submit" disabled={submitting}>
+        {submitting ? 'Saving...' : currentSupplier ? 'Update' : 'Create'}
+      </Button>
+    </div>
+  </form>
+);
+
 export default function SuppliersPage() {
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [loading, setLoading] = useState(true);
@@ -207,155 +357,12 @@ export default function SuppliersPage() {
     }
   };
 
-  const SupplierForm = () => (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="name">Company Name *</Label>
-          <Input
-            id="name"
-            value={formData.name}
-            onChange={(e) => handleInputChange('name', e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <Label htmlFor="contactPerson">Contact Person *</Label>
-          <Input
-            id="contactPerson"
-            value={formData.contactPerson}
-            onChange={(e) => handleInputChange('contactPerson', e.target.value)}
-            required
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="email">Email *</Label>
-          <Input
-            id="email"
-            type="email"
-            value={formData.email}
-            onChange={(e) => handleInputChange('email', e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <Label htmlFor="phone">Phone *</Label>
-          <Input
-            id="phone"
-            value={formData.phone}
-            onChange={(e) => handleInputChange('phone', e.target.value)}
-            required
-          />
-        </div>
-      </div>
-
-      <div>
-        <Label htmlFor="address">Address *</Label>
-        <Input
-          id="address"
-          value={formData.address}
-          onChange={(e) => handleInputChange('address', e.target.value)}
-          required
-        />
-      </div>
-
-      <div className="grid grid-cols-3 gap-4">
-        <div>
-          <Label htmlFor="city">City *</Label>
-          <Input
-            id="city"
-            value={formData.city}
-            onChange={(e) => handleInputChange('city', e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <Label htmlFor="state">State *</Label>
-          <Input
-            id="state"
-            value={formData.state}
-            onChange={(e) => handleInputChange('state', e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <Label htmlFor="zipCode">Zip Code *</Label>
-          <Input
-            id="zipCode"
-            value={formData.zipCode}
-            onChange={(e) => handleInputChange('zipCode', e.target.value)}
-            required
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="country">Country</Label>
-          <Input
-            id="country"
-            value={formData.country}
-            onChange={(e) => handleInputChange('country', e.target.value)}
-          />
-        </div>
-        <div>
-          <Label htmlFor="taxId">Tax ID</Label>
-          <Input
-            id="taxId"
-            value={formData.taxId}
-            onChange={(e) => handleInputChange('taxId', e.target.value)}
-          />
-        </div>
-      </div>
-
-      <div>
-        <Label htmlFor="paymentTerms">Payment Terms</Label>
-        <Select value={formData.paymentTerms} onValueChange={(value) => handleInputChange('paymentTerms', value)}>
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {paymentTermsOptions.map((term) => (
-              <SelectItem key={term} value={term}>
-                {term}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="flex items-center space-x-2">
-        <input
-          type="checkbox"
-          id="isActive"
-          checked={formData.isActive}
-          onChange={(e) => handleInputChange('isActive', e.target.checked)}
-        />
-        <Label htmlFor="isActive">Active</Label>
-      </div>
-
-      <div className="flex justify-end space-x-2">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => {
-            setIsAddDialogOpen(false);
-            setIsEditDialogOpen(false);
-            setFormData(initialFormData);
-            setCurrentSupplier(null);
-          }}
-        >
-          Cancel
-        </Button>
-        <Button type="submit" disabled={submitting}>
-          {submitting ? 'Saving...' : currentSupplier ? 'Update' : 'Create'}
-        </Button>
-      </div>
-    </form>
-  );
+  const handleCancel = () => {
+    setIsAddDialogOpen(false);
+    setIsEditDialogOpen(false);
+    setFormData(initialFormData);
+    setCurrentSupplier(null);
+  };
 
   if (loading) {
     return (
@@ -383,7 +390,14 @@ export default function SuppliersPage() {
             <DialogHeader>
               <DialogTitle>Add New Supplier</DialogTitle>
             </DialogHeader>
-            <SupplierForm />
+            <SupplierForm
+              formData={formData}
+              handleInputChange={handleInputChange}
+              handleSubmit={handleSubmit}
+              submitting={submitting}
+              currentSupplier={currentSupplier}
+              onCancel={handleCancel}
+            />
           </DialogContent>
         </Dialog>
       </div>
@@ -514,7 +528,14 @@ export default function SuppliersPage() {
           <DialogHeader>
             <DialogTitle>Edit Supplier</DialogTitle>
           </DialogHeader>
-          <SupplierForm />
+          <SupplierForm
+            formData={formData}
+            handleInputChange={handleInputChange}
+            handleSubmit={handleSubmit}
+            submitting={submitting}
+            currentSupplier={currentSupplier}
+            onCancel={handleCancel}
+          />
         </DialogContent>
       </Dialog>
     </div>

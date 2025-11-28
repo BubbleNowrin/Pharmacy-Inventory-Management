@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 export interface IPurchase {
   _id: string;
+  pharmacyId: mongoose.Types.ObjectId;
   medicineId: mongoose.Types.ObjectId;
   quantity: number;
   unitPrice: number;
@@ -15,6 +16,11 @@ export interface IPurchase {
 }
 
 const purchaseSchema = new mongoose.Schema<IPurchase>({
+  pharmacyId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Pharmacy',
+    required: [true, 'Pharmacy ID is required'],
+  },
   medicineId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Medication',

@@ -17,7 +17,7 @@ interface User {
   _id: string;
   name: string;
   email: string;
-  role: 'admin' | 'pharmacist' | 'cashier';
+  role: 'pharmacy_admin' | 'pharmacist' | 'cashier';
   createdAt: string;
   updatedAt: string;
 }
@@ -26,7 +26,7 @@ interface UserFormData {
   name: string;
   email: string;
   password: string;
-  role: 'admin' | 'pharmacist' | 'cashier';
+  role: 'pharmacy_admin' | 'pharmacist' | 'cashier';
 }
 
 interface SystemSettings {
@@ -45,7 +45,7 @@ const initialUserData: UserFormData = {
 };
 
 const rolePermissions = {
-  admin: [
+  pharmacy_admin: [
     'Manage all users and roles',
     'Access all system settings',
     'View all reports and analytics',
@@ -88,7 +88,19 @@ export default function SettingsPage() {
     // Get current user from localStorage
     const userData = localStorage.getItem('user');
     if (userData) {
-      setCurrentUser(JSON.parse(userData));
+      const user = JSON.parse(userData);
+      
+      // Check if user has old 'admin' role and needs to re-login
+      if (user.role === 'admin' || !user.pharmacyId) {
+        console.warn('User has legacy admin role or missing pharmacyId. Please log out and log back in.');
+        toast({
+          title: 'Action Required',
+          description: 'Please log out and log back in to refresh your session.',
+          variant: 'destructive',
+        });
+      }
+      
+      setCurrentUser(user);
     }
     fetchUsers();
     loadSettings();
@@ -287,7 +299,7 @@ export default function SettingsPage() {
 
   const getRoleBadgeVariant = (role: string) => {
     switch (role) {
-      case 'admin': return 'destructive';
+      case 'pharmacy_admin': return 'destructive';
       case 'pharmacist': return 'default';
       case 'cashier': return 'secondary';
       default: return 'secondary';
@@ -305,8 +317,8 @@ export default function SettingsPage() {
     );
   }
 
-  // Check if current user is admin
-  const isAdmin = currentUser?.role === 'admin';
+  // Check if current user is admin (support legacy 'admin' role)
+  const isAdmin = currentUser?.role === 'pharmacy_admin' || currentUser?.role === 'admin';
 
   return (
     <div className="p-6 space-y-6">
@@ -451,7 +463,7 @@ export default function SettingsPage() {
                         <Label htmlFor="role">Role</Label>
                         <Select
                           value={userFormData.role}
-                          onValueChange={(value: 'admin' | 'pharmacist' | 'cashier') => 
+                          onValueChange={(value: 'pharmacy_admin' | 'pharmacist' | 'cashier') => 
                             setUserFormData(prev => ({ ...prev, role: value }))
                           }
                         >
@@ -461,7 +473,7 @@ export default function SettingsPage() {
                           <SelectContent>
                             <SelectItem value="cashier">Cashier</SelectItem>
                             <SelectItem value="pharmacist">Pharmacist</SelectItem>
-                            <SelectItem value="admin">Admin</SelectItem>
+                            <SelectItem value="pharmacy_admin">Pharmacy Admin</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -619,7 +631,7 @@ export default function SettingsPage() {
               <Label htmlFor="edit-role">Role</Label>
               <Select
                 value={userFormData.role}
-                onValueChange={(value: 'admin' | 'pharmacist' | 'cashier') => 
+                onValueChange={(value: 'pharmacy_admin' | 'pharmacist' | 'cashier') => 
                   setUserFormData(prev => ({ ...prev, role: value }))
                 }
               >
@@ -629,7 +641,7 @@ export default function SettingsPage() {
                 <SelectContent>
                   <SelectItem value="cashier">Cashier</SelectItem>
                   <SelectItem value="pharmacist">Pharmacist</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="pharmacy_admin">Pharmacy Admin</SelectItem>
                 </SelectContent>
               </Select>
             </div>

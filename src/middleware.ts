@@ -15,9 +15,11 @@ export async function middleware(request: NextRequest) {
   const publicRoutes = [
     '/login', 
     '/register', 
+    '/register-pharmacy',
     '/api/auth/login', 
     '/api/auth/register', 
     '/api/auth/logout',
+    '/api/pharmacies',
     '/test-login'
   ];
   
@@ -37,11 +39,24 @@ export async function middleware(request: NextRequest) {
   try {
     const payload = await verifyToken(token);
     
+    console.log('Token payload:', {
+      userId: payload.userId,
+      email: payload.email,
+      role: payload.role,
+      pharmacyId: payload.pharmacyId
+    });
+    
     // Add user info to request headers for API routes
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set('x-user-id', payload.userId);
     requestHeaders.set('x-user-email', payload.email);
     requestHeaders.set('x-user-role', payload.role);
+    if (payload.pharmacyId) {
+      requestHeaders.set('x-pharmacy-id', payload.pharmacyId);
+      console.log('Setting x-pharmacy-id header:', payload.pharmacyId);
+    } else {
+      console.warn('No pharmacyId in token payload for role:', payload.role);
+    }
     
     return NextResponse.next({
       request: {

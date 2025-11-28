@@ -62,6 +62,15 @@ export async function POST(request: NextRequest) {
   try {
     await dbConnect();
     
+    // Get pharmacy ID from headers
+    const pharmacyId = request.headers.get('x-pharmacy-id');
+    if (!pharmacyId) {
+      return NextResponse.json(
+        { success: false, error: 'Pharmacy ID is required' },
+        { status: 400 }
+      );
+    }
+    
     const body = await request.json();
     const {
       name,
@@ -86,16 +95,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if supplier with same email already exists
-    const existingSupplier = await Supplier.findOne({ email: email.toLowerCase() });
+    // Check if supplier with same email already exists in this pharmacy
+    const existingSupplier = await Supplier.findOne({ 
+      pharmacyId,
+      email: email.toLowerCase() 
+    });
     if (existingSupplier) {
       return NextResponse.json(
-        { success: false, error: 'Supplier with this email already exists' },
+        { success: false, error: 'Supplier with this email already exists in your pharmacy' },
         { status: 400 }
       );
     }
 
     const supplier = new Supplier({
+      pharmacyId,
       name: name.trim(),
       contactPerson: contactPerson.trim(),
       email: email.toLowerCase().trim(),

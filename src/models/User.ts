@@ -5,7 +5,9 @@ export interface IUser {
   name: string;
   email: string;
   password: string;
-  role: 'admin' | 'pharmacist' | 'cashier';
+  role: 'pharmacy_admin' | 'pharmacist' | 'cashier' | 'super_admin';
+  pharmacyId: mongoose.Types.ObjectId;
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -30,8 +32,19 @@ const userSchema = new mongoose.Schema<IUser>({
   },
   role: {
     type: String,
-    enum: ['admin', 'pharmacist', 'cashier'],
+    enum: ['pharmacy_admin', 'pharmacist', 'cashier', 'super_admin'],
     default: 'cashier',
+  },
+  pharmacyId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Pharmacy',
+    required: function() {
+      return this.role !== 'super_admin';
+    },
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
   },
 }, {
   timestamps: true,

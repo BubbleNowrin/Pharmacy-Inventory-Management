@@ -8,6 +8,15 @@ export async function GET(request: NextRequest) {
   try {
     await dbConnect();
     
+    // Extract pharmacyId from headers set by middleware
+    const pharmacyId = request.headers.get('x-pharmacy-id');
+    if (!pharmacyId) {
+      return NextResponse.json(
+        { error: 'Pharmacy ID required' },
+        { status: 400 }
+      );
+    }
+    
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '50');
@@ -17,6 +26,7 @@ export async function GET(request: NextRequest) {
     const { default: InventoryLog } = await import('@/models/InventoryLog');
     
     const adjustments = await InventoryLog.find({
+      pharmacyId,
       type: { $in: ['adjustment', 'expired', 'damaged'] }
     })
       .populate('medicineId', 'name category unit')
@@ -32,6 +42,7 @@ export async function GET(request: NextRequest) {
     }));
     
     const total = await InventoryLog.countDocuments({
+      pharmacyId,
       type: { $in: ['adjustment', 'expired', 'damaged'] }
     });
     
@@ -59,6 +70,16 @@ export async function POST(request: NextRequest) {
 
   try {
     await dbConnect();
+    
+    // Extract pharmacyId from headers set by middleware
+    const pharmacyId = request.headers.get('x-pharmacy-id');
+    if (!pharmacyId) {
+      await session.abortTransaction();
+      return NextResponse.json(
+        { error: 'Pharmacy ID required' },
+        { status: 400 }
+      );
+    }
     
     const { 
       medicineId, 
@@ -122,6 +143,7 @@ export async function POST(request: NextRequest) {
     // Create inventory log entry
     const adjustmentId = new mongoose.Types.ObjectId().toString();
     await createInventoryLog(
+      pharmacyId,
       medicineId,
       type,
       -quantity, // Negative quantity for adjustments (removing stock)

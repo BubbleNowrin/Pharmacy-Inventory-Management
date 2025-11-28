@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface ISupplier extends Document {
+  pharmacyId: mongoose.Types.ObjectId;
   name: string;
   contactPerson: string;
   email: string;
@@ -18,6 +19,11 @@ export interface ISupplier extends Document {
 }
 
 const SupplierSchema = new Schema<ISupplier>({
+  pharmacyId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Pharmacy',
+    required: [true, 'Pharmacy ID is required'],
+  },
   name: {
     type: String,
     required: [true, 'Supplier name is required'],
@@ -35,7 +41,7 @@ const SupplierSchema = new Schema<ISupplier>({
     required: [true, 'Email is required'],
     trim: true,
     lowercase: true,
-    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
+    match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/, 'Please enter a valid email']
   },
   phone: {
     type: String,
@@ -87,8 +93,8 @@ const SupplierSchema = new Schema<ISupplier>({
 });
 
 // Create indexes for better query performance
-SupplierSchema.index({ name: 1 });
-SupplierSchema.index({ email: 1 }, { unique: true });
+SupplierSchema.index({ pharmacyId: 1, name: 1 });
+SupplierSchema.index({ pharmacyId: 1, email: 1 }, { unique: true });
 SupplierSchema.index({ isActive: 1 });
 
 export default mongoose.models.Supplier || mongoose.model<ISupplier>('Supplier', SupplierSchema);

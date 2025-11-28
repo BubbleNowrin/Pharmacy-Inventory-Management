@@ -9,12 +9,21 @@ export async function GET(request: NextRequest) {
   try {
     await dbConnect();
     
+    // Extract pharmacyId from headers set by middleware
+    const pharmacyId = request.headers.get('x-pharmacy-id');
+    if (!pharmacyId) {
+      return NextResponse.json(
+        { error: 'Pharmacy ID required' },
+        { status: 400 }
+      );
+    }
+    
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '50');
     const skip = (page - 1) * limit;
     
-    const purchases = await Purchase.find({})
+    const purchases = await Purchase.find({ pharmacyId })
       .populate('medicineId', 'name category unit')
       .sort({ createdAt: -1 })
       .skip(skip)
@@ -26,7 +35,7 @@ export async function GET(request: NextRequest) {
       medication: purchase.medicineId
     }));
     
-    const total = await Purchase.countDocuments({});
+    const total = await Purchase.countDocuments({ pharmacyId });
     
     return NextResponse.json({
       purchases: transformedPurchases,
@@ -52,6 +61,16 @@ export async function POST(request: NextRequest) {
 
   try {
     await dbConnect();
+    
+    // Extract pharmacyId from headers set by middleware
+    const pharmacyId = request.headers.get('x-pharmacy-id');
+    if (!pharmacyId) {
+      await session.abortTransaction();
+      return NextResponse.json(
+        { error: 'Pharmacy ID required' },
+        { status: 400 }
+      );
+    }
     
     const { 
       medicineId, 
@@ -111,6 +130,7 @@ export async function POST(request: NextRequest) {
 
     // Create the purchase record
     const purchase = new Purchase({
+      pharmacyId,
       medicineId,
       quantity,
       unitPrice,
@@ -140,6 +160,7 @@ export async function POST(request: NextRequest) {
 
     // Create inventory log entry
     await createInventoryLog(
+      pharmacyId,
       medicineId,
       'purchase',
       quantity, // Positive quantity for purchases

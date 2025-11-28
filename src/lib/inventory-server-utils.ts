@@ -2,6 +2,7 @@ import dbConnect from './mongodb';
 import InventoryLog from '../models/InventoryLog';
 
 export async function createInventoryLog(
+  pharmacyId: string,
   medicineId: string,
   type: 'sale' | 'purchase' | 'adjustment' | 'expired' | 'damaged',
   quantity: number,
@@ -19,6 +20,7 @@ export async function createInventoryLog(
 ) {
   await dbConnect();
   const logData = {
+    pharmacyId,
     medicineId,
     type,
     quantity,

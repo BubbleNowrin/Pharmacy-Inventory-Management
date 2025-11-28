@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,7 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { BarcodeScanner } from '@/components/barcode/barcode-scanner';
-import { Plus, Camera } from 'lucide-react';
+import { Plus, Camera, AlertCircle } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 interface AddMedicationDialogProps {
   isOpen: boolean;
@@ -32,6 +34,34 @@ export function AddMedicationDialog({ isOpen, onClose, onSuccess }: AddMedicatio
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [scannerOpen, setScannerOpen] = useState(false);
+  const [suppliers, setSuppliers] = useState<Array<{_id: string, name: string}>>([]);
+  const [loadingSuppliers, setLoadingSuppliers] = useState(false);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchSuppliers();
+    }
+  }, [isOpen]);
+
+  const fetchSuppliers = async () => {
+    setLoadingSuppliers(true);
+    try {
+      const response = await fetch('/api/suppliers?active=true', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      if (response.ok) {
+        const result = await response.json();
+        setSuppliers(result.data || []);
+      }
+    } catch (error) {
+      console.error('Error fetching suppliers:', error);
+    } finally {
+      setLoadingSuppliers(false);
+    }
+  };
 
   const categories = [
     'Painkiller',
@@ -244,13 +274,37 @@ export function AddMedicationDialog({ isOpen, onClose, onSuccess }: AddMedicatio
               
               <div className="space-y-2">
                 <Label htmlFor="supplier">Supplier *</Label>
-                <Input
-                  id="supplier"
-                  value={formData.supplier}
-                  onChange={(e) => handleInputChange('supplier', e.target.value)}
-                  required
-                  placeholder="MedCo Pharmaceuticals"
-                />
+                {suppliers.length === 0 && !loadingSuppliers ? (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 p-3 border border-orange-200 rounded-md bg-orange-50">
+                      <AlertCircle className="h-4 w-4 text-orange-600" />
+                      <span className="text-sm text-orange-800">No suppliers found</span>
+                    </div>
+                    <Link href="/suppliers">
+                      <Button type="button" variant="outline" size="sm" className="w-full">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Suppliers First
+                      </Button>
+                    </Link>
+                  </div>
+                ) : (
+                  <Select 
+                    value={formData.supplier} 
+                    onValueChange={(value) => handleInputChange('supplier', value)}
+                    disabled={loadingSuppliers}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder={loadingSuppliers ? "Loading..." : "Select supplier..."} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {suppliers.map((sup) => (
+                        <SelectItem key={sup._id} value={sup.name}>
+                          {sup.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
               </div>
             </div>
 
@@ -274,7 +328,7 @@ export function AddMedicationDialog({ isOpen, onClose, onSuccess }: AddMedicatio
               <Button type="button" variant="outline" onClick={onClose}>
                 Cancel
               </Button>
-              <Button type="submit" disabled={loading}>
+              <Button type="submit" disabled={loading || suppliers.length === 0}>
                 {loading ? 'Adding...' : 'Add Medication'}
               </Button>
             </div>

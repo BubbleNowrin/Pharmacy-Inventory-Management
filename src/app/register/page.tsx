@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
@@ -16,7 +17,43 @@ export default function RegisterPage() {
   const [role, setRole] = useState('cashier');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [currentUser, setCurrentUser] = useState(null);
   const router = useRouter();
+
+  useEffect(() => {
+    // Check if user is logged in and is pharmacy admin
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      setCurrentUser(user);
+      
+      // Only pharmacy_admins can register new users
+      if (user.role !== 'pharmacy_admin') {
+        router.push('/dashboard');
+        return;
+      }
+    } else {
+      // Redirect to login if not authenticated
+      router.push('/login');
+      return;
+    }
+  }, [router]);
+
+  // Show loading while checking authentication
+  if (!currentUser) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <Card className="w-full max-w-md">
+          <CardContent className="flex items-center justify-center py-8">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+              <p className="mt-2 text-sm text-gray-600">Verifying permissions...</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,10 +67,12 @@ export default function RegisterPage() {
     }
 
     try {
-      const response = await fetch('/api/auth/register', {
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/auth/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ name, email, password, role }),
       });
@@ -41,19 +80,10 @@ export default function RegisterPage() {
       const data = await response.json();
 
       if (response.ok) {
-        // Store token in localStorage and cookie for middleware
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        
-        // Set cookie for middleware
-        document.cookie = `token=${data.token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=strict`;
-        
-        // Small delay to ensure cookie is set, then redirect
-        setTimeout(() => {
-          window.location.href = '/dashboard';
-        }, 100);
+        // User created successfully, redirect back to user management
+        router.push('/dashboard/settings?tab=users&success=User created successfully');
       } else {
-        setError(data.error || 'Registration failed');
+        setError(data.error || 'User registration failed');
       }
     } catch (error) {
       setError('Network error. Please try again.');
@@ -66,9 +96,12 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Register for Pharmacy System</CardTitle>
+          <CardTitle>Add New User</CardTitle>
           <CardDescription>
-            Create your account to get started
+            {currentUser?.pharmacy?.name ? 
+              `Add a new user to ${currentUser.pharmacy.name}` : 
+              'Add a new user to your pharmacy'
+            }
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -97,16 +130,16 @@ export default function RegisterPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="role">Role</Label>
-              <select
-                id="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <option value="cashier">Cashier</option>
-                <option value="pharmacist">Pharmacist</option>
-                <option value="admin">Admin</option>
-              </select>
+              <Select value={role} onValueChange={setRole}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="cashier">Cashier</SelectItem>
+                  <SelectItem value="pharmacist">Pharmacist</SelectItem>
+                  <SelectItem value="pharmacy_admin">Pharmacy Admin</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
@@ -133,15 +166,22 @@ export default function RegisterPage() {
             {error && (
               <div className="text-red-500 text-sm">{error}</div>
             )}
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Creating Account...' : 'Register'}
-            </Button>
+            <div className="flex gap-3">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => router.push('/dashboard/settings')}
+                disabled={loading}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" className="flex-1" disabled={loading}>
+                {loading ? 'Adding User...' : 'Add User'}
+              </Button>
+            </div>
           </form>
-          <div className="mt-4 text-center text-sm">
-            Already have an account?{' '}
-            <Link href="/login" className="text-primary hover:underline">
-              Login here
-            </Link>
+          <div className="mt-4 text-center text-sm text-gray-600">
+            Only pharmacy administrators can add new users to their pharmacy.
           </div>
         </CardContent>
       </Card>

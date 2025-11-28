@@ -41,7 +41,7 @@ export default function LoginPage() {
         }
         
         // Redirect to dashboard
-        window.location.href = '/dashboard';
+        router.push('/dashboard');
       } else {
         setError(data.error || 'Login failed');
       }
@@ -97,11 +97,19 @@ export default function LoginPage() {
               {loading ? 'Logging in...' : 'Login'}
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm">
-            Do not have an account?{' '}
-            <Link href="/register" className="text-primary hover:underline">
-              Register here
-            </Link>
+          <div className="mt-4 text-center text-sm space-y-2">
+            {/* <div>
+              Do not have an account?{' '}
+              <Link href="/register" className="text-primary hover:underline">
+                Register here
+              </Link>
+            </div> */}
+            <div className="border-t pt-2">
+              <span className="text-gray-500">New pharmacy?</span>{' '}
+              <Link href="/register-pharmacy" className="text-primary hover:underline font-medium">
+                Register your pharmacy
+              </Link>
+            </div>
           </div>
         </CardContent>
       </Card>

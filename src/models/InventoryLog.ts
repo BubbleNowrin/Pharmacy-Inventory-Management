@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 export interface IInventoryLog {
   _id: string;
+  pharmacyId: mongoose.Types.ObjectId;
   medicineId: mongoose.Types.ObjectId;
   type: 'sale' | 'purchase' | 'adjustment' | 'expired' | 'damaged';
   quantity: number;
@@ -19,6 +20,11 @@ export interface IInventoryLog {
 }
 
 const inventoryLogSchema = new mongoose.Schema<IInventoryLog>({
+  pharmacyId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Pharmacy',
+    required: [true, 'Pharmacy ID is required'],
+  },
   medicineId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Medication',

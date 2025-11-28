@@ -4,6 +4,7 @@ export interface TokenPayload {
   userId: string;
   email: string;
   role: string;
+  pharmacyId?: string;
 }
 
 // Helper function to encode base64url (Edge Runtime compatible)
@@ -138,7 +139,8 @@ export async function verifyToken(token: string): Promise<TokenPayload> {
     return {
       userId: payload.userId,
       email: payload.email,
-      role: payload.role
+      role: payload.role,
+      pharmacyId: payload.pharmacyId
     };
   } catch (error) {
     console.error('Token verification failed:', error);

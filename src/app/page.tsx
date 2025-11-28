@@ -23,6 +23,167 @@ import {
   Sparkles
 } from "lucide-react";
 
+// Floating Pills Animation Component
+const FloatingPills = () => {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Realistic Pharmaceutical Capsules */}
+      
+      {/* Tylenol-style Capsule */}
+      <div className="absolute top-20 left-10 animate-bounce">
+        <div className="relative w-10 h-20 opacity-45 transform rotate-12">
+          {/* Red cap */}
+          <div className="absolute top-0 w-10 h-10 bg-gradient-to-b from-red-500 to-red-600 rounded-t-full shadow-md border border-red-600"></div>
+          {/* White body */}
+          <div className="absolute bottom-0 w-10 h-10 bg-gradient-to-b from-white to-gray-50 rounded-b-full shadow-md border border-gray-200"></div>
+          {/* Brand text simulation */}
+          <div className="absolute top-3 left-1/2 transform -translate-x-1/2 w-6 h-4 bg-white rounded-sm opacity-80"></div>
+          <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 w-6 h-2 bg-red-600 rounded-sm opacity-60"></div>
+        </div>
+      </div>
+
+      {/* Aspirin-style Round Tablet */}
+      <div className="absolute top-40 right-20 animate-pulse">
+        <div className="relative w-12 h-12 bg-gradient-to-br from-white via-gray-50 to-gray-100 rounded-full opacity-40 shadow-lg border border-gray-200 transform rotate-45">
+          {/* Score line */}
+          <div className="absolute top-1/2 left-2 right-2 h-1 bg-gray-300 rounded transform -translate-y-0.5"></div>
+          {/* Embossed text area */}
+          <div className="absolute top-2 left-2 right-2 bottom-6 bg-gray-100 rounded-full opacity-50"></div>
+          <div className="absolute bottom-2 left-3 right-3 h-2 bg-gray-200 rounded opacity-70"></div>
+        </div>
+      </div>
+
+      {/* Advil-style Gel Capsule */}
+      <div className="absolute top-60 left-1/4 animate-bounce">
+        <div className="relative w-6 h-16 opacity-40 transform -rotate-6">
+          {/* Brown/Orange gel cap */}
+          <div className="absolute top-0 w-6 h-8 bg-gradient-to-b from-amber-600 to-amber-700 rounded-t-full shadow-md"></div>
+          {/* Brown/Orange gel body */}
+          <div className="absolute bottom-0 w-6 h-8 bg-gradient-to-b from-amber-700 to-amber-800 rounded-b-full shadow-md"></div>
+          {/* Gel shine effect */}
+          <div className="absolute top-1 left-1 w-2 h-6 bg-gradient-to-r from-white to-transparent rounded-full opacity-30"></div>
+        </div>
+      </div>
+
+      {/* Vitamin-style Oval Tablet */}
+      <div className="absolute top-32 right-1/3 animate-pulse">
+        <div className="relative w-10 h-7 bg-gradient-to-br from-yellow-300 via-yellow-400 to-yellow-500 rounded-full opacity-35 shadow-lg border border-yellow-400 transform rotate-12">
+          {/* Score line */}
+          <div className="absolute top-1/2 left-2 right-2 h-0.5 bg-yellow-600 rounded transform -translate-y-0.5"></div>
+          {/* Vitamin marking */}
+          <div className="absolute top-1 left-1/2 transform -translate-x-1/2 w-3 h-2 bg-yellow-600 rounded-sm opacity-40"></div>
+          <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-4 h-1.5 bg-yellow-700 rounded-sm opacity-30"></div>
+        </div>
+      </div>
+
+      {/* Prescription Capsule */}
+      <div className="absolute bottom-40 left-20 animate-bounce">
+        <div className="relative w-8 h-18 opacity-30 transform rotate-6">
+          {/* Blue cap */}
+          <div className="absolute top-0 w-8 h-9 bg-gradient-to-b from-blue-600 to-blue-700 rounded-t-full shadow-lg border border-blue-700"></div>
+          {/* White body */}
+          <div className="absolute bottom-0 w-8 h-9 bg-gradient-to-b from-white to-gray-50 rounded-b-full shadow-lg border border-gray-200"></div>
+          {/* Rx markings */}
+          <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-5 h-2 bg-white rounded opacity-70"></div>
+          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-5 h-3 bg-blue-700 rounded opacity-50"></div>
+        </div>
+      </div>
+
+      {/* Pepto-style Pink Tablet */}
+      <div className="absolute bottom-60 right-10 animate-pulse">
+        <div className="relative w-9 h-9 bg-gradient-to-br from-pink-300 via-pink-400 to-pink-500 rounded-full opacity-35 shadow-lg border border-pink-400 transform -rotate-12">
+          {/* Cross score pattern */}
+          <div className="absolute top-1/2 left-2 right-2 h-1 bg-pink-600 rounded transform -translate-y-0.5"></div>
+          <div className="absolute left-1/2 top-2 bottom-2 w-1 bg-pink-600 rounded transform -translate-x-0.5"></div>
+          {/* Brand area */}
+          <div className="absolute top-1.5 left-1.5 right-1.5 bottom-5 bg-pink-400 rounded-full opacity-40"></div>
+        </div>
+      </div>
+
+      {/* Extended Release Tablet */}
+      <div className="absolute top-80 left-1/2 animate-bounce">
+        <div className="relative w-16 h-6 bg-gradient-to-r from-indigo-400 via-indigo-500 to-indigo-600 rounded-full opacity-30 shadow-lg border border-indigo-500 transform rotate-3">
+          {/* Score line */}
+          <div className="absolute top-1/2 left-3 right-3 h-1 bg-indigo-700 rounded transform -translate-y-0.5"></div>
+          {/* XL marking */}
+          <div className="absolute top-1 left-2 w-3 h-2 bg-indigo-700 rounded opacity-50"></div>
+          <div className="absolute top-1 right-2 w-3 h-2 bg-indigo-700 rounded opacity-50"></div>
+          <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1.5 bg-indigo-800 rounded opacity-40"></div>
+        </div>
+      </div>
+
+      {/* Triangular Specialty Tablet */}
+      <div className="absolute bottom-32 right-1/4 animate-pulse">
+        <div className="relative w-10 h-10 opacity-25 transform rotate-45">
+          <div className="w-10 h-10 bg-gradient-to-br from-teal-400 via-teal-500 to-teal-600 rounded-lg shadow-lg border border-teal-500"></div>
+          {/* Score lines */}
+          <div className="absolute top-1/2 left-2 right-2 h-0.5 bg-teal-700 rounded transform -translate-y-0.5 rotate-45"></div>
+          <div className="absolute left-1/2 top-2 bottom-2 w-0.5 bg-teal-700 rounded transform -translate-x-0.5 rotate-45"></div>
+        </div>
+      </div>
+
+      {/* Small Gel Capsule */}
+      <div className="absolute top-16 left-1/3 animate-float">
+        <div className="relative w-5 h-12 opacity-35 transform rotate-12">
+          {/* Clear gel cap */}
+          <div className="absolute top-0 w-5 h-6 bg-gradient-to-b from-cyan-200 to-cyan-300 rounded-t-full shadow-md border border-cyan-300"></div>
+          <div className="absolute bottom-0 w-5 h-6 bg-gradient-to-b from-cyan-300 to-cyan-400 rounded-b-full shadow-md border border-cyan-400"></div>
+          {/* Gel shine */}
+          <div className="absolute top-1 left-0.5 w-1.5 h-4 bg-white rounded-full opacity-40"></div>
+        </div>
+      </div>
+
+      {/* Chewable Tablet */}
+      <div className="absolute bottom-20 right-1/2 animate-float">
+        <div className="relative w-8 h-8 bg-gradient-to-br from-orange-300 via-orange-400 to-orange-500 rounded-lg opacity-30 shadow-md border border-orange-400 transform -rotate-6">
+          {/* Chewable texture */}
+          <div className="absolute top-1/2 left-1 right-1 h-0.5 bg-orange-600 rounded transform -translate-y-0.5"></div>
+          <div className="absolute top-2 left-2 w-2 h-1 bg-orange-600 rounded opacity-50"></div>
+          <div className="absolute bottom-2 right-2 w-2 h-1 bg-orange-600 rounded opacity-50"></div>
+          <div className="absolute top-1 left-1/2 transform -translate-x-1/2 w-3 h-2 bg-orange-500 rounded"></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Subtle Pills Animation for Features Section
+const SubtlePills = () => {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Small Capsule */}
+      <div className="absolute top-10 right-16 animate-pulse">
+        <div className="relative w-3 h-8 opacity-15">
+          <div className="absolute top-0 w-3 h-4 bg-gradient-to-b from-blue-300 to-blue-400 rounded-t-full"></div>
+          <div className="absolute bottom-0 w-3 h-4 bg-gradient-to-b from-white to-gray-200 rounded-b-full"></div>
+        </div>
+      </div>
+      
+      {/* Small Round Tablet */}
+      <div className="absolute bottom-20 left-12 animate-float">
+        <div className="w-5 h-5 bg-gradient-to-br from-green-300 to-green-400 rounded-full opacity-20 shadow-sm">
+          <div className="absolute top-1/2 left-0.5 right-0.5 h-0.5 bg-green-600 opacity-40 rounded transform -translate-y-0.5"></div>
+        </div>
+      </div>
+      
+      {/* Tiny Oval Tablet */}
+      <div className="absolute top-1/3 left-8 animate-pulse">
+        <div className="w-6 h-4 bg-gradient-to-br from-purple-300 to-purple-400 rounded-full opacity-15 shadow-sm">
+          <div className="absolute top-1/2 left-0.5 right-0.5 h-0.5 bg-purple-600 opacity-30 rounded transform -translate-y-0.5"></div>
+        </div>
+      </div>
+      
+      {/* Small Square Tablet */}
+      <div className="absolute bottom-1/3 right-8 animate-float">
+        <div className="relative w-5 h-5 bg-gradient-to-br from-orange-300 to-orange-400 rounded opacity-18 shadow-sm">
+          <div className="absolute top-1/2 left-0.5 right-0.5 h-0.5 bg-orange-600 opacity-40 rounded transform -translate-y-0.5"></div>
+          <div className="absolute left-1/2 top-0.5 bottom-0.5 w-0.5 bg-orange-600 opacity-40 rounded transform -translate-x-0.5"></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -165,6 +326,7 @@ export default function Home() {
         {/* Hero Section */}
         <section className="relative py-16 lg:py-24 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-contrast-lime/20 via-background to-contrast-teal/20"></div>
+          <FloatingPills />
           
           <div className="container mx-auto px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -285,6 +447,7 @@ export default function Home() {
 
         {/* Features Section */}
         <section id="features" className="py-20 lg:py-28 relative overflow-hidden">
+          <SubtlePills />
           <div className="container mx-auto px-6 lg:px-8 relative z-10">
             <div className="text-center max-w-3xl mx-auto mb-16 animate-fadeInUp">
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">

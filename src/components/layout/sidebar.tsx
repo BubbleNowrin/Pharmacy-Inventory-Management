@@ -70,13 +70,13 @@ export function Sidebar() {
   };
 
   return (
-    <div className="flex h-full w-64 flex-col bg-white border-r border-gray-200">
-      <div className="flex h-20 items-center px-6 border-b border-gray-100">
-        <div className="flex items-center gap-2 text-primary">
-          <div className="p-2 bg-primary/10 rounded-lg">
+    <div className="flex h-full w-64 flex-col bg-primary border-r border-primary">
+      <div className="flex h-20 items-center px-6 border-b border-primary-foreground/10">
+        <div className="flex items-center gap-2 text-primary-foreground">
+          <div className="p-2 bg-primary-foreground/10 rounded-lg">
             <Activity className="h-6 w-6" />
           </div>
-          <h1 className="text-xl font-bold text-gray-900">PharmaCare</h1>
+          <h1 className="text-xl font-bold">PharmaCare</h1>
         </div>
       </div>
       
@@ -92,22 +92,22 @@ export function Sidebar() {
               className={cn(
                 'flex items-center rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200',
                 isActive
-                  ? 'bg-primary text-white shadow-md shadow-primary/20'
-                  : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'bg-primary-foreground text-primary shadow-md'
+                  : 'text-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground'
               )}
             >
-              <Icon className={cn("mr-3 h-5 w-5", isActive ? "text-white" : "text-gray-400 group-hover:text-gray-600")} />
+              <Icon className={cn("mr-3 h-5 w-5", isActive ? "text-primary" : "text-primary-foreground/60")} />
               {item.title}
             </Link>
           );
         })}
       </nav>
       
-      <div className="p-4 border-t border-gray-100">
+      <div className="p-4 border-t border-primary-foreground/10">
         <Button
           onClick={handleLogout}
           variant="ghost"
-          className="w-full justify-start text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors"
+          className="w-full justify-start text-primary-foreground/70 hover:bg-red-500/10 hover:text-red-400 transition-colors"
         >
           <LogOut className="mr-3 h-5 w-5" />
           Logout

@@ -357,36 +357,36 @@ export default function PurchasesPage() {
         </Card>
 
         {/* Recent Purchases */}
-        <Card>
+        <Card className="bg-contrast-lavender border-none shadow-md">
           <CardHeader>
-            <CardTitle>Recent Purchases</CardTitle>
-            <CardDescription>Latest purchase transactions</CardDescription>
+            <CardTitle className="text-primary">Recent Purchases</CardTitle>
+            <CardDescription className="text-primary/70">Latest purchase transactions</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3 max-h-96 overflow-y-auto">
               {purchases.slice(0, 10).map((purchase) => (
-                <div key={purchase._id} className="flex items-center justify-between p-3 border rounded-lg">
+                <div key={purchase._id} className="flex items-center justify-between p-3 bg-white/80 border-primary/10 border rounded-lg">
                   <div>
-                    <div className="font-medium">{purchase.medication?.name}</div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="font-medium text-primary">{purchase.medication?.name}</div>
+                    <div className="text-sm text-primary/70">
                       {purchase.quantity} units • ${purchase.totalAmount.toFixed(2)}
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-primary/70">
                       Supplier: {purchase.supplier}
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-primary/70">
                       {new Date(purchase.date).toLocaleDateString()}
                     </div>
-                    <Badge variant="outline">
+                    <Badge variant="outline" className="border-primary/20 text-primary">
                       {purchase.batchNumber}
                     </Badge>
                   </div>
                 </div>
               ))}
               {purchases.length === 0 && (
-                <div className="text-center text-muted-foreground py-8">
+                <div className="text-center text-primary/60 py-8">
                   No purchases recorded yet
                 </div>
               )}

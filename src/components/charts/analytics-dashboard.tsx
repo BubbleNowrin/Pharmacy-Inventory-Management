@@ -108,55 +108,63 @@ export function AnalyticsDashboard() {
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card className="bg-contrast-lime border-none shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-primary/80">Total Revenue</CardTitle>
+            <div className="p-1.5 bg-white/50 rounded-lg">
+              <TrendingUp className="h-4 w-4 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(totalSales)}</div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-2xl font-bold text-primary">{formatCurrency(totalSales)}</div>
+            <p className="text-xs text-primary/70">
               Last {selectedPeriod} days
             </p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="bg-contrast-teal border-none shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Daily Average</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-primary/80">Daily Average</CardTitle>
+            <div className="p-1.5 bg-white/50 rounded-lg">
+              <Activity className="h-4 w-4 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(averageDailySales)}</div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-2xl font-bold text-primary">{formatCurrency(averageDailySales)}</div>
+            <p className="text-xs text-primary/70">
               Per day revenue
             </p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="bg-contrast-pink border-none shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Profit Margin</CardTitle>
-            <BarChart3 className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-primary/80">Profit Margin</CardTitle>
+            <div className="p-1.5 bg-white/50 rounded-lg">
+              <BarChart3 className="h-4 w-4 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{profitMargin.toFixed(1)}%</div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-2xl font-bold text-primary">{profitMargin.toFixed(1)}%</div>
+            <p className="text-xs text-primary/70">
               Estimated profit margin
             </p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="bg-contrast-lavender border-none shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Inventory Value</CardTitle>
-            <TrendingDown className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-primary/80">Inventory Value</CardTitle>
+            <div className="p-1.5 bg-white/50 rounded-lg">
+              <TrendingDown className="h-4 w-4 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-primary">
               {formatCurrency(analyticsData.inventorySummary.totalValue)}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-primary/70">
               Current stock value
             </p>
           </CardContent>

@@ -215,13 +215,15 @@ export default function InventoryLogsPage() {
 
       {/* Summary Stats */}
       <div className="grid gap-4 md:grid-cols-4">
-        <Card>
+        <Card className="bg-contrast-lime border-none shadow-md hover:shadow-lg transition-shadow">
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
-              <ArrowDown className="h-4 w-4 text-red-500" />
+              <div className="p-1.5 bg-white/50 rounded-lg">
+                <ArrowDown className="h-4 w-4 text-primary" />
+              </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total Sales</p>
-                <p className="text-2xl font-bold">
+                <p className="text-sm text-primary/70">Total Sales</p>
+                <p className="text-2xl font-bold text-primary">
                   {filteredLogs.filter(log => log.type === 'sale').length}
                 </p>
               </div>
@@ -229,13 +231,15 @@ export default function InventoryLogsPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-contrast-teal border-none shadow-md hover:shadow-lg transition-shadow">
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
-              <ArrowUp className="h-4 w-4 text-green-500" />
+              <div className="p-1.5 bg-white/50 rounded-lg">
+                <ArrowUp className="h-4 w-4 text-primary" />
+              </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total Purchases</p>
-                <p className="text-2xl font-bold">
+                <p className="text-sm text-primary/70">Total Purchases</p>
+                <p className="text-2xl font-bold text-primary">
                   {filteredLogs.filter(log => log.type === 'purchase').length}
                 </p>
               </div>
@@ -243,24 +247,26 @@ export default function InventoryLogsPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-contrast-pink border-none shadow-md hover:shadow-lg transition-shadow">
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
-              <FileText className="h-4 w-4 text-blue-500" />
+              <div className="p-1.5 bg-white/50 rounded-lg">
+                <FileText className="h-4 w-4 text-primary" />
+              </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total Movements</p>
-                <p className="text-2xl font-bold">{filteredLogs.length}</p>
+                <p className="text-sm text-primary/70">Total Movements</p>
+                <p className="text-2xl font-bold text-primary">{filteredLogs.length}</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-contrast-lavender border-none shadow-md hover:shadow-lg transition-shadow">
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
               <div>
-                <p className="text-sm text-muted-foreground">Total Value</p>
-                <p className="text-2xl font-bold">
+                <p className="text-sm text-primary/70">Total Value</p>
+                <p className="text-2xl font-bold text-primary">
                   ${filteredLogs.reduce((sum, log) => sum + (log.totalAmount || 0), 0).toFixed(2)}
                 </p>
               </div>

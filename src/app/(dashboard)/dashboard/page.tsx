@@ -136,74 +136,74 @@ export default function DashboardPage() {
         <>
           {/* Overview Stats */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <Card className="border-none shadow-md bg-white hover:shadow-lg transition-shadow duration-200">
+            <Card className="border-none shadow-md bg-contrast-lime hover:shadow-lg transition-shadow duration-200">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between space-y-0 pb-2">
-                  <p className="text-sm font-medium text-gray-500">Total Medicines</p>
-                  <div className="p-2 bg-blue-50 rounded-lg">
-                    <Pill className="h-5 w-5 text-blue-600" />
+                  <p className="text-sm font-medium text-primary/80">Total Medicines</p>
+                  <div className="p-2 bg-white/50 rounded-lg">
+                    <Pill className="h-5 w-5 text-primary" />
                   </div>
                 </div>
                 <div className="mt-3">
-                  <div className="text-3xl font-bold text-gray-900">{loading ? '...' : totalMedications}</div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    <span className="text-green-600 font-medium">↑ 12%</span> from last month
+                  <div className="text-3xl font-bold text-primary">{loading ? '...' : totalMedications}</div>
+                  <p className="text-xs text-primary/70 mt-1">
+                    <span className="text-green-700 font-medium">↑ 12%</span> from last month
                   </p>
                 </div>
               </CardContent>
             </Card>
             
-            <Card className="border-none shadow-md bg-white hover:shadow-lg transition-shadow duration-200">
+            <Card className="border-none shadow-md bg-contrast-pink hover:shadow-lg transition-shadow duration-200">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between space-y-0 pb-2">
-                  <p className="text-sm font-medium text-gray-500">Low Stock Items</p>
-                  <div className="p-2 bg-red-50 rounded-lg">
-                    <AlertTriangle className="h-5 w-5 text-red-600" />
+                  <p className="text-sm font-medium text-primary/80">Low Stock Items</p>
+                  <div className="p-2 bg-white/50 rounded-lg">
+                    <AlertTriangle className="h-5 w-5 text-primary" />
                   </div>
                 </div>
                 <div className="mt-3">
-                  <div className="text-3xl font-bold text-gray-900">
+                  <div className="text-3xl font-bold text-primary">
                     {loading ? '...' : alerts.summary.lowStockCount}
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-primary/70 mt-1">
                     Requires immediate attention
                   </p>
                 </div>
               </CardContent>
             </Card>
             
-            <Card className="border-none shadow-md bg-white hover:shadow-lg transition-shadow duration-200">
+            <Card className="border-none shadow-md bg-contrast-lavender hover:shadow-lg transition-shadow duration-200">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between space-y-0 pb-2">
-                  <p className="text-sm font-medium text-gray-500">Expiring Soon</p>
-                  <div className="p-2 bg-amber-50 rounded-lg">
-                    <Calendar className="h-5 w-5 text-amber-600" />
+                  <p className="text-sm font-medium text-primary/80">Expiring Soon</p>
+                  <div className="p-2 bg-white/50 rounded-lg">
+                    <Calendar className="h-5 w-5 text-primary" />
                   </div>
                 </div>
                 <div className="mt-3">
-                  <div className="text-3xl font-bold text-gray-900">
+                  <div className="text-3xl font-bold text-primary">
                     {loading ? '...' : alerts.summary.expiringSoonCount}
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-primary/70 mt-1">
                     Within next 30 days
                   </p>
                 </div>
               </CardContent>
             </Card>
             
-            <Card className="border-none shadow-md bg-white hover:shadow-lg transition-shadow duration-200">
+            <Card className="border-none shadow-md bg-contrast-teal hover:shadow-lg transition-shadow duration-200">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between space-y-0 pb-2">
-                  <p className="text-sm font-medium text-gray-500">Inventory Value</p>
-                  <div className="p-2 bg-emerald-50 rounded-lg">
-                    <DollarSign className="h-5 w-5 text-emerald-600" />
+                  <p className="text-sm font-medium text-primary/80">Inventory Value</p>
+                  <div className="p-2 bg-white/50 rounded-lg">
+                    <DollarSign className="h-5 w-5 text-primary" />
                   </div>
                 </div>
                 <div className="mt-3">
-                  <div className="text-3xl font-bold text-gray-900">
+                  <div className="text-3xl font-bold text-primary">
                     {loading ? '...' : formatCurrency(inventoryValue)}
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-primary/70 mt-1">
                     Current stock value
                   </p>
                 </div>
@@ -215,11 +215,11 @@ export default function DashboardPage() {
             <div className="lg:col-span-2 space-y-8">
               {/* Recent Activities */}
               <Card className="border-none shadow-md overflow-hidden">
-                <CardHeader className="bg-white border-b border-gray-100 pb-4">
+                <CardHeader className="bg-white border-b border-border pb-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-lg font-bold text-gray-900">Recent Activities</CardTitle>
-                      <CardDescription className="text-gray-500">
+                      <CardTitle className="text-lg font-bold text-foreground">Recent Activities</CardTitle>
+                      <CardDescription className="text-muted-foreground">
                         Latest inventory movements and alerts
                       </CardDescription>
                     </div>
@@ -279,46 +279,46 @@ export default function DashboardPage() {
 
               {/* Quick Actions Grid */}
               <div>
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Quick Actions</h3>
+                <h3 className="text-lg font-bold text-foreground mb-4">Quick Actions</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <button 
                     onClick={() => window.location.href = '/inventory'}
-                    className="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group"
+                    className="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm border border-border hover:shadow-md hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group"
                   >
-                    <div className="h-12 w-12 bg-blue-50 rounded-full flex items-center justify-center mb-3 group-hover:bg-blue-100 transition-colors">
-                      <Package className="h-6 w-6 text-blue-600" />
+                    <div className="h-12 w-12 bg-contrast-lime/40 rounded-full flex items-center justify-center mb-3 group-hover:bg-contrast-lime/60 transition-colors">
+                      <Package className="h-6 w-6 text-primary" />
                     </div>
-                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Add Medicine</span>
+                    <span className="text-sm font-medium text-foreground/80 group-hover:text-foreground">Add Medicine</span>
                   </button>
                   
                   <button 
                     onClick={() => window.location.href = '/sales'}
-                    className="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group"
+                    className="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm border border-border hover:shadow-md hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group"
                   >
-                    <div className="h-12 w-12 bg-emerald-50 rounded-full flex items-center justify-center mb-3 group-hover:bg-emerald-100 transition-colors">
-                      <DollarSign className="h-6 w-6 text-emerald-600" />
+                    <div className="h-12 w-12 bg-contrast-teal/40 rounded-full flex items-center justify-center mb-3 group-hover:bg-contrast-teal/60 transition-colors">
+                      <DollarSign className="h-6 w-6 text-primary" />
                     </div>
-                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Record Sale</span>
+                    <span className="text-sm font-medium text-foreground/80 group-hover:text-foreground">Record Sale</span>
                   </button>
                   
                   <button 
                     onClick={() => window.location.href = '/purchases'}
-                    className="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group"
+                    className="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm border border-border hover:shadow-md hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group"
                   >
-                    <div className="h-12 w-12 bg-purple-50 rounded-full flex items-center justify-center mb-3 group-hover:bg-purple-100 transition-colors">
-                      <TrendingUp className="h-6 w-6 text-purple-600" />
+                    <div className="h-12 w-12 bg-contrast-lavender/40 rounded-full flex items-center justify-center mb-3 group-hover:bg-contrast-lavender/60 transition-colors">
+                      <TrendingUp className="h-6 w-6 text-primary" />
                     </div>
-                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Add Purchase</span>
+                    <span className="text-sm font-medium text-foreground/80 group-hover:text-foreground">Add Purchase</span>
                   </button>
                   
                   <button 
                     onClick={() => window.location.href = '/suppliers'}
-                    className="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group"
+                    className="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm border border-border hover:shadow-md hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group"
                   >
-                    <div className="h-12 w-12 bg-orange-50 rounded-full flex items-center justify-center mb-3 group-hover:bg-orange-100 transition-colors">
-                      <Users className="h-6 w-6 text-orange-600" />
+                    <div className="h-12 w-12 bg-contrast-pink/40 rounded-full flex items-center justify-center mb-3 group-hover:bg-contrast-pink/60 transition-colors">
+                      <Users className="h-6 w-6 text-primary" />
                     </div>
-                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Suppliers</span>
+                    <span className="text-sm font-medium text-foreground/80 group-hover:text-foreground">Suppliers</span>
                   </button>
                 </div>
               </div>

@@ -116,35 +116,41 @@ export default function InventoryPage() {
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        <Card>
+        <Card className="bg-contrast-lime border-none shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Medications</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-primary/80">Total Medications</CardTitle>
+            <div className="p-1.5 bg-white/50 rounded-lg">
+              <Package className="h-4 w-4 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{pagination.total}</div>
+            <div className="text-2xl font-bold text-primary">{pagination.total}</div>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="bg-contrast-pink border-none shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Low Stock Items</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-red-500" />
+            <CardTitle className="text-sm font-medium text-primary/80">Low Stock Items</CardTitle>
+            <div className="p-1.5 bg-white/50 rounded-lg">
+              <AlertTriangle className="h-4 w-4 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">
+            <div className="text-2xl font-bold text-primary">
               {medications.filter(isLowStock).length}
             </div>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="bg-contrast-lavender border-none shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Expiring Soon</CardTitle>
-            <Calendar className="h-4 w-4 text-yellow-500" />
+            <CardTitle className="text-sm font-medium text-primary/80">Expiring Soon</CardTitle>
+            <div className="p-1.5 bg-white/50 rounded-lg">
+              <Calendar className="h-4 w-4 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">
+            <div className="text-2xl font-bold text-primary">
               {medications.filter(isExpiringSoon).length}
             </div>
           </CardContent>

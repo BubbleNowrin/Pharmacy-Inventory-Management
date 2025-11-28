@@ -259,38 +259,38 @@ export default function SalesPage() {
         </Card>
 
         {/* Recent Sales */}
-        <Card>
+        <Card className="bg-contrast-teal border-none shadow-md">
           <CardHeader>
-            <CardTitle>Recent Sales</CardTitle>
-            <CardDescription>Latest sales transactions</CardDescription>
+            <CardTitle className="text-primary">Recent Sales</CardTitle>
+            <CardDescription className="text-primary/70">Latest sales transactions</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3 max-h-96 overflow-y-auto">
               {sales.slice(0, 10).map((sale) => (
-                <div key={sale._id} className="flex items-center justify-between p-3 border rounded-lg">
+                <div key={sale._id} className="flex items-center justify-between p-3 bg-white/80 border-primary/10 border rounded-lg">
                   <div>
-                    <div className="font-medium">{sale.medication?.name}</div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="font-medium text-primary">{sale.medication?.name}</div>
+                    <div className="text-sm text-primary/70">
                       {sale.quantity} units • ${sale.totalAmount.toFixed(2)}
                     </div>
                     {sale.customerName && (
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-sm text-primary/70">
                         Customer: {sale.customerName}
                       </div>
                     )}
                   </div>
                   <div className="text-right">
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-primary/70">
                       {new Date(sale.date).toLocaleDateString()}
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-primary/70">
                       {new Date(sale.date).toLocaleTimeString()}
                     </div>
                   </div>
                 </div>
               ))}
               {sales.length === 0 && (
-                <div className="text-center text-muted-foreground py-8">
+                <div className="text-center text-primary/60 py-8">
                   No sales recorded yet
                 </div>
               )}

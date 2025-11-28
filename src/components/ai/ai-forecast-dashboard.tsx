@@ -165,49 +165,57 @@ export function AIForecastDashboard() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
-        <Card>
+        <Card className="bg-contrast-pink border-none shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">High Risk Items</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-red-500" />
+            <CardTitle className="text-sm font-medium text-primary/80">High Risk Items</CardTitle>
+            <div className="p-1.5 bg-white/50 rounded-lg">
+              <AlertTriangle className="h-4 w-4 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{highRiskItems.length}</div>
-            <p className="text-xs text-muted-foreground">Immediate attention needed</p>
+            <div className="text-2xl font-bold text-primary">{highRiskItems.length}</div>
+            <p className="text-xs text-primary/70">Immediate attention needed</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-contrast-lavender border-none shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Medium Risk Items</CardTitle>
-            <Clock className="h-4 w-4 text-yellow-500" />
+            <CardTitle className="text-sm font-medium text-primary/80">Medium Risk Items</CardTitle>
+            <div className="p-1.5 bg-white/50 rounded-lg">
+              <Clock className="h-4 w-4 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{mediumRiskItems.length}</div>
-            <p className="text-xs text-muted-foreground">Monitor closely</p>
+            <div className="text-2xl font-bold text-primary">{mediumRiskItems.length}</div>
+            <p className="text-xs text-primary/70">Monitor closely</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-contrast-teal border-none shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">AI Insights</CardTitle>
-            <Brain className="h-4 w-4 text-primary" />
+            <CardTitle className="text-sm font-medium text-primary/80">AI Insights</CardTitle>
+            <div className="p-1.5 bg-white/50 rounded-lg">
+              <Brain className="h-4 w-4 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-primary">{aiData.insights.length}</div>
-            <p className="text-xs text-muted-foreground">Actionable recommendations</p>
+            <p className="text-xs text-primary/70">Actionable recommendations</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-contrast-lime border-none shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Analysis Date</CardTitle>
-            <TrendingUp className="h-4 w-4 text-green-500" />
+            <CardTitle className="text-sm font-medium text-primary/80">Analysis Date</CardTitle>
+            <div className="p-1.5 bg-white/50 rounded-lg">
+              <TrendingUp className="h-4 w-4 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-sm font-bold">
+            <div className="text-sm font-bold text-primary">
               {new Date(aiData.metadata.analysisDate).toLocaleDateString()}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-primary/70">
               {aiData.metadata.medicationsAnalyzed} medications analyzed
             </p>
           </CardContent>
@@ -228,9 +236,9 @@ export function AIForecastDashboard() {
         <CardContent>
           <div className="space-y-3">
             {aiData.insights.map((insight, index) => (
-              <div key={index} className="flex items-start gap-3 p-3 bg-teal-50 rounded-lg">
+              <div key={index} className="flex items-start gap-3 p-3 bg-contrast-teal/20 rounded-lg">
                 <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                <p className="text-sm text-teal-900">{insight}</p>
+                <p className="text-sm text-foreground">{insight}</p>
               </div>
             ))}
           </div>
